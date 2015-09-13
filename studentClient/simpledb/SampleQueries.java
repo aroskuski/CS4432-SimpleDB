@@ -9,39 +9,50 @@ public class SampleQueries {
 			conn = d.connect("jdbc:simpledb://localhost", null);
 			Statement stmt = conn.createStatement();
 			
-			String s = "create table Gear (GName varchar(20) PRIMARY_KEY, BName varchar (20), MAbility varchar(20))";
-			stmt.executeQuery(s);
+			String s = "create table Gear (GName varchar(20), BrandId int, MAbility varchar(20))";
+			System.out.println(s);
+			stmt.executeUpdate(s);
 			
-			s = "insert into Gear(GName, BName, MAbility) values ";
-			String[] vals = {"('Gas Mask', 'Forge', 'Tenacity')",
-					         "('Moto Boots', 'Rockenberg', 'Quick Respawn')",
-					         "('Cherry Kicks', 'Rockenberg', 'Stealth Jump')",
-					         "('Octo Tee', 'Cuttlegear', 'Haunt')",
-					         "('Tinted Shades', 'Zekko', 'Last-Ditch Effort')",
-					         "('Basic Tee', 'SquidForce', 'Quick Respawn')"};
+			s = "insert into Gear(GName, BrandId, MAbility) values ";
+			String[] vals = {"('Gas Mask', 2, 'Tenacity')",
+					         "('Moto Boots', 1, 'Quick Respawn')",
+					         "('Cherry Kicks', 1, 'Stealth Jump')",
+					         "('Octo Tee', 3, 'Haunt')",
+					         "('Tinted Shades', 4, 'Last-Ditch Effort')",
+					         "('Basic Tee', 5, 'Quick Respawn')"};
 			
 			for (String v : vals){
-				stmt.executeQuery(s + v);
+				System.out.println(s + v);
+				stmt.executeUpdate(s + v);
 			}
 			
 			
-			s = "create table Brand (BName varchar (20) PRIMARY_KEY, FavoredSub varchar(20))";
-			stmt.executeQuery(s);
+			s = "create table Brand (Bid int, BName varchar(20), FavoredSub varchar(20))";
+			System.out.println(s);
+			stmt.executeUpdate(s);
 			
-			s = "insert into Brand(BName, FavoredSub) values ";
-			String[] vals2 = {"('Rockenberg', 'Run Speed Up')",
-					          "('Forge', 'Special Duration Up')",
-					          "('Cuttlegear', NULL)",
-					          "('Zekko', 'Special Saver')",
-					          "('Squidforce', 'Damage Up')",
-					          "('Inkline', 'Defense Up')",
-					          "('Tentatek', 'Ink Recovery Up')"};
+			s = "insert into Brand(Bid, BName, FavoredSub) values ";
+			String[] vals2 = {"(1, 'Rockenberg', 'Run Speed Up')",
+					          "(2, 'Forge', 'Special Duration Up')",
+					          "(3, 'Cuttlegear', 'NULL')",
+					          "(4, 'Zekko', 'Special Saver')",
+					          "(5, 'Squidforce', 'Damage Up')",
+					          "(6, 'Inkline', 'Defense Up')",
+					          "(7, 'Tentatek', 'Ink Recovery Up')"};
 			
 			for (String v : vals2){
-				stmt.executeQuery(s + v);
+				System.out.println(s + v);
+				stmt.executeUpdate(s + v);
 			}
 			
+			String qry = "select GName, BName, FavoredSub from Gear, Brand where BrandId = Bid";
+			System.out.println(qry);
+			ResultSet rs = stmt.executeQuery(qry);
 			
+			while(rs.next()){
+				System.out.println(rs.getString("GName") + "\t" + rs.getString("BName") +
+						"\t" + rs.getString("FavoredSub"));
+			}
 			
 		} catch (Exception e){
 			e.printStackTrace();
