@@ -54,6 +54,8 @@ public class SampleQueries {
 						"\t" + rs.getString("FavoredSub"));
 			}
 			
+			rs.close();
+			
 		} catch (Exception e){
 			e.printStackTrace();
 		} finally {
