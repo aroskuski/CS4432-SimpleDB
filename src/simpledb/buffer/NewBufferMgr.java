@@ -14,7 +14,7 @@ class NewBufferMgr {
    private Buffer[] bufferpool;
    private int numAvailable;
    private Queue<Integer> free;
-   private HashMap<Block, Integer> available;
+   private HashMap<Block, Buffer> blockIndex;
    
    /**
     * Creates a buffer manager having the specified number 
@@ -33,6 +33,7 @@ class NewBufferMgr {
       bufferpool = new Buffer[numbuffs];
       numAvailable = numbuffs;
       free = new LinkedList<Integer>();
+      blockIndex = new HashMap<Block, Buffer>();
       
       for (int i=0; i<numbuffs; i++){
          bufferpool[i] = new Buffer();
@@ -65,7 +66,11 @@ class NewBufferMgr {
          buff = chooseUnpinnedBuffer();
          if (buff == null)
             return null;
+         if(blockIndex.get(buff.block()) != null){
+        	 blockIndex.remove(buff.block());
+         }
          buff.assignToBlock(blk);
+         blockIndex.put(blk, buff);
       }
       if (!buff.isPinned())
          numAvailable--;
@@ -86,7 +91,11 @@ class NewBufferMgr {
       Buffer buff = chooseUnpinnedBuffer();
       if (buff == null)
          return null;
+      if(blockIndex.get(buff.block()) != null){
+     	 blockIndex.remove(buff.block());
+      }
       buff.assignToNew(filename, fmtr);
+      blockIndex.put(buff.block(), buff);
       numAvailable--;
       buff.pin();
       return buff;
@@ -111,12 +120,7 @@ class NewBufferMgr {
    }
    
    private Buffer findExistingBuffer(Block blk) {
-      for (Buffer buff : bufferpool) {
-         Block b = buff.block();
-         if (b != null && b.equals(blk))
-            return buff;
-      }
-      return null;
+      return blockIndex.get(blk);
    }
 
    private synchronized Buffer chooseUnpinnedBuffer() {
