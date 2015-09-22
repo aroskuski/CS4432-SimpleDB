@@ -15,6 +15,8 @@ class NewBufferMgr {
    private int numAvailable;
    private Queue<Integer> free;
    private HashMap<Block, Integer> available;
+   private ClockReplacement CRU;
+   private LeastRecentlyUsed LRU;
    
    /**
     * Creates a buffer manager having the specified number 
@@ -38,6 +40,9 @@ class NewBufferMgr {
          bufferpool[i] = new Buffer();
          free.add(i);
       }
+      
+      CRU.fillArray(numbuffs);
+      LRU.fillArray(numbuffs);
    }
    
    /**
@@ -113,8 +118,9 @@ class NewBufferMgr {
    private Buffer findExistingBuffer(Block blk) {
       for (Buffer buff : bufferpool) {
          Block b = buff.block();
-         if (b != null && b.equals(blk))
-            return buff;
+         if (b != null && b.equals(blk)){
+        	 return buff;
+         }
       }
       return null;
    }
