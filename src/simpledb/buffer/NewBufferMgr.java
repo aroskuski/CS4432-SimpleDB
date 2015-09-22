@@ -1,5 +1,9 @@
 package simpledb.buffer;
 
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Queue;
+
 import simpledb.file.*;
 
 /**
@@ -9,6 +13,8 @@ import simpledb.file.*;
 class NewBufferMgr {
    private Buffer[] bufferpool;
    private int numAvailable;
+   private Queue<Integer> free;
+   private HashMap<Block, Integer> available;
    
    /**
     * Creates a buffer manager having the specified number 
@@ -26,8 +32,12 @@ class NewBufferMgr {
    NewBufferMgr(int numbuffs) {
       bufferpool = new Buffer[numbuffs];
       numAvailable = numbuffs;
-      for (int i=0; i<numbuffs; i++)
+      free = new LinkedList<Integer>();
+      
+      for (int i=0; i<numbuffs; i++){
          bufferpool[i] = new Buffer();
+         free.add(i);
+      }
    }
    
    /**
@@ -108,11 +118,23 @@ class NewBufferMgr {
       }
       return null;
    }
-   
-   private Buffer chooseUnpinnedBuffer() {
-      for (Buffer buff : bufferpool)
-         if (!buff.isPinned())
-         return buff;
-      return null;
+
+   private synchronized Buffer chooseUnpinnedBuffer() {
+
+	   Integer buffIndex = free.poll();
+	   if(buffIndex != null){
+		   return bufferpool[buffIndex];
+	   } else {
+		   
+		   for (Buffer buff : bufferpool){
+			   if (!buff.isPinned()){
+				   return buff;
+			   }
+		   }
+		   return null;
+	   }
+	   
    }
+   
+   
 }
