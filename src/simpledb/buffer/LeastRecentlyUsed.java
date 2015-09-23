@@ -1,5 +1,7 @@
 package simpledb.buffer;
 
+import java.util.Arrays;
+
 public class LeastRecentlyUsed implements ReplacementPolicy {
 	
 	
@@ -67,9 +69,9 @@ public class LeastRecentlyUsed implements ReplacementPolicy {
 
 	/*Pins a buffer that was unpinned and makes note of
 	 * that in index*/
-	public void pin(Buffer buffx)
+	public void pin(Buffer buff)
 	{
-		int BuffIndex = 0;
+		int BuffIndex = Arrays.asList(bufferPool).indexOf(buff);
 		BufferIndexes[BuffIndex] = -1;
 		incrementIndex();
 	}
