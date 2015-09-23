@@ -12,6 +12,12 @@ public class ClockReplacement implements ReplacementPolicy {
 	/*The index which the clock hand is currently on.*/
 	public int clockHand = 0;
 	
+	private Buffer[] bufferPool;
+	
+	ClockReplacement(Buffer[] bufferPool){
+		this.bufferPool = bufferPool;
+	}
+	
 	/*Creates a clean list of 0s.*/
 	public void fillArray(int NumBuffers)
 	{
@@ -96,21 +102,24 @@ public class ClockReplacement implements ReplacementPolicy {
 	}
 	
 	/*Adds a new pinned buffer and moves the clock hand*/
-	public void newPin(int BuffIndex)
+	public void newPin(Buffer buff)
 	{
+		int BuffIndex = 0;
 		BufferIndexes[BuffIndex] = -1;
 		NextBuffer();
 	}
 
 	/*Pins an existing buffer that was unpinned*/
-	public void pin(int BuffIndex)
+	public void pin(Buffer buff)
 	{
+		int BuffIndex = 0;
 		BufferIndexes[BuffIndex] = -1;
 	}
 	
 	/*Unpins an existing buffer that was pinned*/
-	public void unpin(int BuffIndex)
+	public void unpin(Buffer buff)
 	{
+		int BuffIndex = 0;
 		BufferIndexes[BuffIndex] = 2;
 	}
 

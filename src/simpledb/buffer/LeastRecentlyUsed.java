@@ -2,6 +2,7 @@ package simpledb.buffer;
 
 public class LeastRecentlyUsed implements ReplacementPolicy {
 	
+	
 	/*List of the status of the buffer. The value stored at an
 	index represents whether the data is pinned, unpinned, 
 	or was used recently. 0 means there's no data, -1 means it
@@ -9,6 +10,12 @@ public class LeastRecentlyUsed implements ReplacementPolicy {
 	data at that location in the buffer. The lower the number,
 	the more recently it has been used.*/
 	public int[] BufferIndexes;
+	
+	private Buffer[] bufferPool;
+	
+	LeastRecentlyUsed(Buffer[] bufferPool){
+		this.bufferPool = bufferPool;
+	}
 	
 	/*Creates a clean list of 0s.*/
 	public void fillArray(int NumBuffers)
@@ -51,24 +58,27 @@ public class LeastRecentlyUsed implements ReplacementPolicy {
 	}
 	
 	/*Notes the index of a new pinned buffer*/
-	public void newPin(int BuffIndex)
+	public void newPin(Buffer buff)
 	{
+		int BuffIndex = 0;
 		BufferIndexes[BuffIndex] = -1;
 		incrementIndex();
 	}
 
 	/*Pins a buffer that was unpinned and makes note of
 	 * that in index*/
-	public void pin(int BuffIndex)
+	public void pin(Buffer buffx)
 	{
+		int BuffIndex = 0;
 		BufferIndexes[BuffIndex] = -1;
 		incrementIndex();
 	}
 	
 	/*Unpins an existing pinned buffer and make it the
 	 * most recently used buffer. */
-	public void unpin(int BuffIndex)
+	public void unpin(Buffer buff)
 	{
+		int BuffIndex = 0;
 		incrementIndex();
 		BufferIndexes[BuffIndex] = 1;
 	}

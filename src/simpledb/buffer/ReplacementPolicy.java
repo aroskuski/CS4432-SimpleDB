@@ -6,9 +6,9 @@ public interface ReplacementPolicy {
 	
 	public int indexToReplace();
 	
-	public void newPin(int BuffIndex);
+	public void newPin(Buffer buff);
 
-	public void pin(int BuffIndex);
+	public void pin(Buffer buff);
 	
-	public void unpin(int BuffIndex);
+	public void unpin(Buffer buff);
 }
