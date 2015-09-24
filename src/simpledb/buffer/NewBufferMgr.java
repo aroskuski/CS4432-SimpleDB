@@ -7,14 +7,19 @@ import java.util.Queue;
 import simpledb.file.*;
 
 /**
+ * CS4432-Project1
+ * This BufferManager is a brand new buffer manager that is based on
+ * BasicBufferMgr.java
  * Manages the pinning and unpinning of buffers to blocks.
  *
  */
 class NewBufferMgr {
    private Buffer[] bufferpool;
    private int numAvailable;
+   /*CS4432-Project1*/
    private Queue<Integer> free;
    private HashMap<Block, Buffer> blockIndex;
+   /*CS4432-Project1*/
    private ClockReplacement CRU;
    private LeastRecentlyUsed LRU;
    
@@ -35,13 +40,14 @@ class NewBufferMgr {
       bufferpool = new Buffer[numbuffs];
       numAvailable = numbuffs;
       free = new LinkedList<Integer>();
+      /*CS4432-Project1*/
       blockIndex = new HashMap<Block, Buffer>();
       
       for (int i=0; i<numbuffs; i++){
          bufferpool[i] = new Buffer();
          free.add(i);
       }
-      
+      /*CS4432-Project1*/
       CRU.fillArray(numbuffs);
       LRU.fillArray(numbuffs);
    }
@@ -71,10 +77,12 @@ class NewBufferMgr {
          buff = chooseUnpinnedBuffer();
          if (buff == null)
             return null;
+         /*CS4432-Project1*/
          if(blockIndex.get(buff.block()) != null){
         	 blockIndex.remove(buff.block());
          }
          buff.assignToBlock(blk);
+         /*CS4432-Project1*/
          blockIndex.put(blk, buff);
       }
       if (!buff.isPinned())
@@ -96,10 +104,12 @@ class NewBufferMgr {
       Buffer buff = chooseUnpinnedBuffer();
       if (buff == null)
          return null;
+      /*CS4432-Project1*/
       if(blockIndex.get(buff.block()) != null){
      	 blockIndex.remove(buff.block());
       }
       buff.assignToNew(filename, fmtr);
+      /*CS4432-Project1*/
       blockIndex.put(buff.block(), buff);
       numAvailable--;
       buff.pin();
@@ -125,11 +135,13 @@ class NewBufferMgr {
    }
    
    private Buffer findExistingBuffer(Block blk) {
+	   /*CS4432-Project1*/
       return blockIndex.get(blk);
    }
 
    private synchronized Buffer chooseUnpinnedBuffer() {
 
+	   /*CS4432-Project1*/
 	   Integer buffIndex = free.poll();
 	   if(buffIndex != null){
 		   return bufferpool[buffIndex];
