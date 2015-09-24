@@ -47,7 +47,10 @@ class NewBufferMgr {
          bufferpool[i] = new Buffer();
          free.add(i);
       }
+      
       /*CS4432-Project1*/
+      CRU = new ClockReplacement(bufferpool);
+      LRU = new LeastRecentlyUsed(bufferpool);
       CRU.fillArray(numbuffs);
       LRU.fillArray(numbuffs);
    }
