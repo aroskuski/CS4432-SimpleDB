@@ -62,7 +62,7 @@ public class LeastRecentlyUsed implements ReplacementPolicy {
 	/*Notes the index of a new pinned buffer*/
 	public void newPin(Buffer buff)
 	{
-		int BuffIndex = 0;
+		int BuffIndex = Arrays.asList(bufferPool).indexOf(buff);
 		BufferIndexes[BuffIndex] = -1;
 		incrementIndex();
 	}
@@ -80,15 +80,7 @@ public class LeastRecentlyUsed implements ReplacementPolicy {
 	 * most recently used buffer. */
 	public void unpin(Buffer buff)
 	{
-		int BuffIndex = 0;
-		incrementIndex();
-		BufferIndexes[BuffIndex] = 1;
-	}
-	
-	/*When a buffer is searched for and found, make it
-	 * the most recently used buffer.*/
-	public void find(int BuffIndex)
-	{
+		int BuffIndex = Arrays.asList(bufferPool).indexOf(buff);
 		incrementIndex();
 		BufferIndexes[BuffIndex] = 1;
 	}

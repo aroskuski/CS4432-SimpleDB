@@ -1,5 +1,7 @@
 package simpledb.buffer;
 
+import java.util.Arrays;
+
 public class ClockReplacement implements ReplacementPolicy {
 	
 	/*List of the status of the buffer. The value stored at an
@@ -104,7 +106,7 @@ public class ClockReplacement implements ReplacementPolicy {
 	/*Adds a new pinned buffer and moves the clock hand*/
 	public void newPin(Buffer buff)
 	{
-		int BuffIndex = 0;
+		int BuffIndex = Arrays.asList(bufferPool).indexOf(buff);
 		BufferIndexes[BuffIndex] = -1;
 		NextBuffer();
 	}
@@ -112,14 +114,14 @@ public class ClockReplacement implements ReplacementPolicy {
 	/*Pins an existing buffer that was unpinned*/
 	public void pin(Buffer buff)
 	{
-		int BuffIndex = 0;
+		int BuffIndex = Arrays.asList(bufferPool).indexOf(buff);
 		BufferIndexes[BuffIndex] = -1;
 	}
 	
 	/*Unpins an existing buffer that was pinned*/
 	public void unpin(Buffer buff)
 	{
-		int BuffIndex = 0;
+		int BuffIndex = Arrays.asList(bufferPool).indexOf(buff);
 		BufferIndexes[BuffIndex] = 2;
 	}
 
