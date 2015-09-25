@@ -14,6 +14,7 @@ import simpledb.file.*;
  * @author Edward Sciore
  */
 public class Buffer {
+	/*CS4432-Project1 new id field to get the id of the buffer.*/
    private int id;
    private Page contents = new Page();
    private Block blk = null;
@@ -196,7 +197,7 @@ public class Buffer {
    @Override
    public String toString(){
 	   String bufferString;
-	   String bufferId = " ";
+	   String bufferId = Integer.toString(id);
 	   String block = blk.fileName();
 	   String pinned;
 	   if (isPinned() == true){
