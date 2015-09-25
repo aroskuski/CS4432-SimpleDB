@@ -51,7 +51,7 @@ public class LeastRecentlyUsed implements ReplacementPolicy {
 	
 	/*CS4432-Project1 Every transaction, increment all unpinned buffer values that
 	were not used in the transaction.*/
-	public void incrementIndex()
+	private void incrementIndex()
 	{
 		for (int i=0; i<BufferIndexes.length; i++)
 		{

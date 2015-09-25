@@ -20,7 +20,7 @@ class NewBufferMgr {
    private Queue<Integer> free;
    private HashMap<Block, Buffer> blockIndex;
    /*CS4432-Project1*/
-   private ClockReplacement CRU;
+   private ClockReplacement Clock;
    private LeastRecentlyUsed LRU;
    
    /**
@@ -48,10 +48,12 @@ class NewBufferMgr {
          free.add(i);
       }
       
-      /*CS4432-Project1*/
-      CRU = new ClockReplacement(bufferpool);
+      /*CS4432-Project1 Initializes the replacement policies by
+       * setting the bufferpool references and filling the array
+       * indexes with neutral numbers.*/
+      Clock = new ClockReplacement(bufferpool);
       LRU = new LeastRecentlyUsed(bufferpool);
-      CRU.fillArray(numbuffs);
+      Clock.fillArray(numbuffs);
       LRU.fillArray(numbuffs);
    }
    
@@ -91,6 +93,14 @@ class NewBufferMgr {
       if (!buff.isPinned())
          numAvailable--;
       buff.pin();
+      
+      /*CS4432-Project1 Let's the index array in the replacement
+       * policies know that this buffer is now pinned. For LRU,
+       * this means that this is the most recently used buffer,
+       * for clock it means that this buffer is pinned.*/
+      LRU.pin(buff);
+      Clock.pin(buff);
+      
       return buff;
    }
    
@@ -116,6 +126,14 @@ class NewBufferMgr {
       blockIndex.put(buff.block(), buff);
       numAvailable--;
       buff.pin();
+      
+      /*CS4432-Project1 Lets the replacement policies know that a buffer
+       * has been added and that it is now pinned. For LRU, it means this
+       * that this buffer pinned, and for Clock, move the hand to the 
+       * next buffer.*/
+      LRU.newPin(buff);
+      Clock.newPin(buff);
+      
       return buff;
    }
    
@@ -127,6 +145,12 @@ class NewBufferMgr {
       buff.unpin();
       if (!buff.isPinned())
          numAvailable++;
+      
+      /*CS4432-Project1 Let's the replacement policies know that something was unpinned.
+       * In the case of LRU, it means that this is the most recently used buffer and
+       * for clock, it just means that the buffer is unpinned*/
+      LRU.unpin(buff);
+      Clock.unpin(buff);
    }
    
    /**
