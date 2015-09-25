@@ -124,7 +124,8 @@ public class BufferMgr {
    
    /*CS4432-Project1 The new toString method of the buffer manager. Uses
     * the buffer manager's newToString method to get the info.*/
-   public void newToString(){
-	 bufferMgr.newToString();
+   @Override
+   public String toString(){
+	 return bufferMgr.toString();
    }
 }

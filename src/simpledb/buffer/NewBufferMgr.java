@@ -1,5 +1,6 @@
 package simpledb.buffer;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -186,12 +187,11 @@ class NewBufferMgr {
    
    /*CS4432-Project1 The new toString method of the buffer manager. Uses
     * the Buffer's newToString method to get the info.*/
-   public void newToString(){
-	 String bufferInfo = " ";
-	 for(Buffer buff : bufferpool){
-		 bufferInfo = buff.newToString() + "\n";
-	 }
-	 System.out.println(bufferInfo);
+   @Override
+   public String toString(){
+	 String bufferInfo = "";
+	 bufferInfo += Arrays.toString(bufferpool);
+	 return bufferInfo;
    }
    
 }

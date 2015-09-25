@@ -190,7 +190,8 @@ public class Buffer {
    
    /*CS4432-Project1 The new toString method for the buffer. Returns a string
     * that says the buffer's ID, the block it was allocated to, and if it's pinned*/
-   public String newToString(){
+   @Override
+   public String toString(){
 	   String bufferString;
 	   String bufferId = " ";
 	   String block = blk.fileName();
