@@ -30,7 +30,7 @@ class BasicBufferMgr {
       bufferpool = new Buffer[numbuffs];
       numAvailable = numbuffs;
       for (int i=0; i<numbuffs; i++)
-         bufferpool[i] = new Buffer();
+         bufferpool[i] = new Buffer(i);
    }
    
    /**

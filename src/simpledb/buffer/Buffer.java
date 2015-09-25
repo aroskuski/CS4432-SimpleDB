@@ -14,6 +14,7 @@ import simpledb.file.*;
  * @author Edward Sciore
  */
 public class Buffer {
+   private int id;
    private Page contents = new Page();
    private Block blk = null;
    private int pins = 0;
@@ -34,7 +35,9 @@ public class Buffer {
     * {@link simpledb.server.SimpleDB#initFileAndLogMgr(String)} or
     * is called first.
     */
-   public Buffer() {}
+   public Buffer(int id) {
+	   this.id = id;
+   }
    
    /**
     * Returns the integer value at the specified offset of the

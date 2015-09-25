@@ -45,7 +45,7 @@ class NewBufferMgr {
       blockIndex = new HashMap<Block, Buffer>();
       
       for (int i=0; i<numbuffs; i++){
-         bufferpool[i] = new Buffer();
+         bufferpool[i] = new Buffer(i);
          free.add(i);
       }
       
