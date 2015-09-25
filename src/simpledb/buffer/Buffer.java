@@ -189,7 +189,7 @@ public class Buffer {
    }
    
    /*CS4432-Project1 The new toString method for the buffer. Returns a string
-    * that says the buffer's ID, the block it was allocated to, and if it's pinned
+    * that says the buffer's ID, the block it was allocated to, and if it's pinned*/
    public String newToString(){
 	   String bufferString;
 	   String bufferId = " ";
@@ -203,5 +203,5 @@ public class Buffer {
 	   }
 	   bufferString = new String("Buffer ID: " + bufferId + ", Block: " + block + ", Pin: " + pinned);
 	   return bufferString;
-   }*/
+   }
 }

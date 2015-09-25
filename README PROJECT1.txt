@@ -34,3 +34,5 @@ a transaction, the integer value denoting what transaction modified it. The isMo
 checks whether or not the buffer was modified during a certain transaction. If it was, then the
 buffer is dirty and needs to be flushed. If the buffer is dirty, then the flush method is used to
 write the page back to it's disk block and it's "modifiedBy" since the buffer was written to disk
+
+buffer id is the id in the array
