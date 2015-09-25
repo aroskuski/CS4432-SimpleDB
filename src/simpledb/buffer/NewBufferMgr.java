@@ -45,6 +45,8 @@ class NewBufferMgr {
       blockIndex = new HashMap<Block, Buffer>();
       
       for (int i=0; i<numbuffs; i++){
+    	  /*CS4432-Project1 creates a new buffer and makes sure it is
+    	   * given an id value*/
          bufferpool[i] = new Buffer(i);
          free.add(i);
       }
