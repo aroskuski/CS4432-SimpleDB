@@ -20,6 +20,7 @@ public class LeastRecentlyUsed implements ReplacementPolicy {
 	
 	LeastRecentlyUsed(Buffer[] bufferPool){
 		this.bufferPool = bufferPool;
+		BufferIndexes = new int[bufferPool.length];
 	}
 	
 	/*CS4432-Project1 Creates a clean list of 0s.*/
