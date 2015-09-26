@@ -61,7 +61,7 @@ public class TestLRU {
 			
 			tx.commit();
 			
-			SimpleDB.init("studentdb");
+			SimpleDB.initFileLogAndBufferMgr("studentdb");
 			
 			BufferMgr bm = SimpleDB.bufferMgr();
 			
