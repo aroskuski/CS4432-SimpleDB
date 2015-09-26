@@ -14,7 +14,7 @@ import simpledb.file.*;
  * Manages the pinning and unpinning of buffers to blocks.
  *
  */
-class NewBufferMgr {
+class NewBufferMgr implements IBufferManager{
    private Buffer[] bufferpool;
    private int numAvailable;
    /*CS4432-Project1*/
@@ -64,7 +64,7 @@ class NewBufferMgr {
     * Flushes the dirty buffers modified by the specified transaction.
     * @param txnum the transaction's id number
     */
-   synchronized void flushAll(int txnum) {
+   public synchronized void flushAll(int txnum) {
       for (Buffer buff : bufferpool)
          if (buff.isModifiedBy(txnum))
          buff.flush();
@@ -79,7 +79,7 @@ class NewBufferMgr {
     * @param blk a reference to a disk block
     * @return the pinned buffer
     */
-   synchronized Buffer pin(Block blk) {
+   public synchronized Buffer pin(Block blk) {
       Buffer buff = findExistingBuffer(blk);
       if (buff == null) {
          buff = chooseUnpinnedBuffer();
@@ -116,7 +116,7 @@ class NewBufferMgr {
     * @param fmtr a pageformatter object, used to format the new block
     * @return the pinned buffer
     */
-   synchronized Buffer pinNew(String filename, PageFormatter fmtr) {
+   public synchronized Buffer pinNew(String filename, PageFormatter fmtr) {
       Buffer buff = chooseUnpinnedBuffer();
       if (buff == null)
          return null;
@@ -144,7 +144,7 @@ class NewBufferMgr {
     * Unpins the specified buffer.
     * @param buff the buffer to be unpinned
     */
-   synchronized void unpin(Buffer buff) {
+   public synchronized void unpin(Buffer buff) {
       buff.unpin();
       if (!buff.isPinned())
          numAvailable++;
@@ -160,7 +160,7 @@ class NewBufferMgr {
     * Returns the number of available (i.e. unpinned) buffers.
     * @return the number of available buffers
     */
-   int available() {
+   public int available() {
       return numAvailable;
    }
    
