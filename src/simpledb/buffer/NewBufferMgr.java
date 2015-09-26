@@ -186,7 +186,7 @@ class NewBufferMgr implements IBufferManager{
     * the Buffer's newToString method to get the info.*/
    @Override
    public String toString(){
-	 String bufferInfo = "";
+	 String bufferInfo = "Replacement policy :" + rp.getClass().getSimpleName();
 	 bufferInfo += Arrays.toString(bufferpool);
 	 return bufferInfo;
    }
