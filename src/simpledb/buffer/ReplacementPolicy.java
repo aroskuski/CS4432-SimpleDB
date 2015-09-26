@@ -9,7 +9,7 @@ public interface ReplacementPolicy {
 	public void fillArray(int NumBuffers);
 	
 	/*CS4432-Project1 Gets the index of the buffer that is to be replaced*/
-	public int indexToReplace();
+	public Buffer indexToReplace();
 	
 	/*CS4432-Project1 Notes that the buffer being added is pinned and
 	 * sets a value according to it.*/

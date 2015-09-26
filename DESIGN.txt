@@ -3,6 +3,9 @@ buffer at that index. That way, the buffers themselves are not being accessed in
 a separate entity is. Any changes in the array of buffers is reflected in these arrays so that, 
 when it comes time to replace a buffer, the appropriate buffer is changed.
 
+A replacement policy interface was created in order to better implement the two replacement policies.
+Both have functions for when a buffer needs to be replaced, when a buffer is added, pinned, and unpinned.
+
 Least Recently Used originally sets all of the numbers in its array to 0, meaning that there
 is nothing there at that index. If there's a -1, that means that there is something in the buffer
 at that index, but it is pinned so it cannot be replaced. If there is a number that is greater
@@ -28,4 +31,5 @@ If it is a 1, that means this buffer can be removed and a new buffer can take it
 not, then it has to check all of the other buffers before it returns back to the buffer the 
 clock hand started at and finds out that the information in the buffer can be replaced. However,
 if any other index values it checks has a value of 1, that buffer can be removed and it/its
-index is returned. If all of the buffers are pinned, it returns -1 meaning nothing can be replaced
+index is returned. If all of the buffers are pinned, it returns -1 meaning nothing can be replaced.
+
