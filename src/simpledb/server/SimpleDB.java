@@ -76,8 +76,17 @@ public class SimpleDB {
     * @param dirname the name of the database directory
     */
    public static void initFileLogAndBufferMgr(String dirname) {
+      initFileLogAndBufferMgr(dirname, false);
+   }
+   
+   /**
+    * Initializes the file, log, and buffer managers.
+    * @param dirname the name of the database directory
+    * @param clock true for clock policy, false for LRU
+    */
+   public static void initFileLogAndBufferMgr(String dirname, boolean clock) {
       initFileAndLogMgr(dirname);
-      bm = new BufferMgr(BUFFER_SIZE);
+      bm = new BufferMgr(BUFFER_SIZE, clock);
    }
    
    /**

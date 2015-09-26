@@ -21,8 +21,7 @@ class NewBufferMgr implements IBufferManager{
    private Queue<Integer> free;
    private HashMap<Block, Buffer> blockIndex;
    /*CS4432-Project1*/
-   private ClockReplacement Clock;
-   private LeastRecentlyUsed LRU;
+   private ReplacementPolicy rp;
    
    /**
     * Creates a buffer manager having the specified number 
@@ -37,7 +36,7 @@ class NewBufferMgr implements IBufferManager{
     * is called first.
     * @param numbuffs the number of buffer slots to allocate
     */
-   NewBufferMgr(int numbuffs) {
+   NewBufferMgr(int numbuffs, boolean clock) {
       bufferpool = new Buffer[numbuffs];
       numAvailable = numbuffs;
       free = new LinkedList<Integer>();
@@ -54,10 +53,14 @@ class NewBufferMgr implements IBufferManager{
       /*CS4432-Project1 Initializes the replacement policies by
        * setting the bufferpool references and filling the array
        * indexes with neutral numbers.*/
-      Clock = new ClockReplacement(bufferpool);
-      LRU = new LeastRecentlyUsed(bufferpool);
-      Clock.fillArray(numbuffs);
-      LRU.fillArray(numbuffs);
+      if (clock){
+    	  rp = new ClockReplacement(bufferpool);
+      } else {
+    	  rp = new LeastRecentlyUsed(bufferpool);
+      }
+      
+      //LRU = new LeastRecentlyUsed(bufferpool);
+      rp.fillArray(numbuffs);
    }
    
    /**
@@ -101,8 +104,7 @@ class NewBufferMgr implements IBufferManager{
        * policies know that this buffer is now pinned. For LRU,
        * this means that this is the most recently used buffer,
        * for clock it means that this buffer is pinned.*/
-      LRU.pin(buff);
-      Clock.pin(buff);
+      rp.pin(buff);
       
       return buff;
    }
@@ -134,8 +136,7 @@ class NewBufferMgr implements IBufferManager{
        * has been added and that it is now pinned. For LRU, it means this
        * that this buffer pinned, and for Clock, move the hand to the 
        * next buffer.*/
-      LRU.newPin(buff);
-      Clock.newPin(buff);
+      rp.newPin(buff);
       
       return buff;
    }
@@ -152,8 +153,7 @@ class NewBufferMgr implements IBufferManager{
       /*CS4432-Project1 Let's the replacement policies know that something was unpinned.
        * In the case of LRU, it means that this is the most recently used buffer and
        * for clock, it just means that the buffer is unpinned*/
-      LRU.unpin(buff);
-      Clock.unpin(buff);
+      rp.unpin(buff);
    }
    
    /**
@@ -176,13 +176,8 @@ class NewBufferMgr implements IBufferManager{
 	   if(buffIndex != null){
 		   return bufferpool[buffIndex];
 	   } else {
-		   
-		   for (Buffer buff : bufferpool){
-			   if (!buff.isPinned()){
-				   return buff;
-			   }
-		   }
-		   return null;
+		   return rp.indexToReplace();
+
 	   }
 	   
    }
