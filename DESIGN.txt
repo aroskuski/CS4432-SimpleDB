@@ -34,11 +34,15 @@ if any other index values it checks has a value of 1, that buffer can be removed
 returned. If all of the buffers are pinned, it returns null meaning nothing can be replaced.
 
 The buffer managers use these replacement policies when looking for an unpinned buffer. Before
-populating the buffer, a list of integers with all of the free buffers is created. Whenever a 
-new page is added, the list is polled and whatever value is received is the next empty buffer.
+populating the buffer, a queue of integers with all of the free buffers is created. Whenever a 
+new page is added, the queue is polled and whatever value is received is the next empty buffer.
 This is an easy way to figure out which buffer empty, rather than having to search the entire
 buffer pool to find an empty buffer. A hashmap is also created to show which block is located in
-which buffer. Hashmaps have a constant search time of O(n), so it has faster search time and 
-automatically returns null if a block isn't associated with a buffer.
+which buffer. Hashmaps have a constant search time of O(n), so it has faster search time than the
+previous system and automatically returns null if a block isn't associated with a buffer.
 
-Due to the use of all of new data structures, 
+Due to the use of all of new data structures, a new buffer manager was created. We wanted to keep
+the old one for comparison, so we created a new buffer manager. We also created a buffer manager 
+interface which both buffer managers now implement. We just made it so that the actual BufferMgr 
+class has the buffer manager interface as a private value instead of a single buffer manager since
+we want it to use our new buffer manager as well as the old buffer manager.

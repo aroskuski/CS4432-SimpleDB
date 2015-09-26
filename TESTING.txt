@@ -1,10 +1,12 @@
 We used a single pattern to test our replacement policies. We started by adding and pinning 8 pages in our
-buffer pool. Then we unpinned the 7th page and added a new page we call 9. As such, the buffer pool goes from:
+buffer pool. Then we unpinned the 7th page and added a new page we call 9. These are used to test pinning
+unpinning and replacing single pages into the buffer pool. As such, the buffer pool goes from:
 
 1* 2* 3* 4* 5* 6* 7* 8* -> 1* 2* 3* 4* 5* 6* 7 8* -> 1* 2* 3* 4* 5* 6* 9* 8*
 
 Then, we try adding a new page called 10. Since the buffer pool is full and all of the pages are pinned,
-nothing changes.
+nothing changes. This is to test if the buffer pool can recognize that no data can be added to the buffer
+pool since all of the pages are pinned.
 
 We then unpin the 5th and 3rd pages in the buffer pool in that order. So the buffer pool goes from:
 
@@ -12,7 +14,9 @@ We then unpin the 5th and 3rd pages in the buffer pool in that order. So the buf
 
 We then add a new page, 11, to the buffer pool. The results for this will differ between LRU and Clock. In LRU,
 the 5th page will be replaced since it is the least recently used page that was unpinned. In Clock, the 3rd
-page will be replaced since it is the first page that we encountered that could have it's contents replaced.
+page will be replaced since it is the first page that we encountered that could have it's contents replaced. 
+This is to test if the replacement policy can figure out what buffer to replace when there is more than one 
+unpinned buffer.
 So for LRU, the buffer pool goes from:
 
 1* 2* 3 4* 5 6* 9* 8* -> 1* 2* 3 4* 11 6* 9* 8*
@@ -20,6 +24,9 @@ So for LRU, the buffer pool goes from:
 In Clock, the buffer pool goes from:
 
  1* 2* 3 4* 5 6* 9* 8* -> 1* 2* 11 4* 5 6* 9* 8*
+ 
+ The following information are the outputs from running TestLRU, and then TestClock after the database
+ is wiped.
  
  Output for LRU:
  Picked up JAVA_TOOL_OPTIONS: -javaagent:/usr/share/java/jayatanaag.jar 

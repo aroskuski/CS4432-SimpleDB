@@ -1,6 +1,10 @@
 import java.sql.*;
 import simpledb.remote.SimpleDriver;
 
+/* CS4432-Project1 This file was used for our initial testing and understanding of
+ * how the buffer manager worked. This code is used during the testing of LRU and clock
+ * replacement policies.
+ */
 public class SampleQueries {
 	public static void main(String[] args) {
 		Connection conn = null;

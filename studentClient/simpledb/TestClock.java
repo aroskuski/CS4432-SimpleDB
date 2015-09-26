@@ -6,13 +6,8 @@ import simpledb.file.Block;
 import simpledb.query.*;
 import simpledb.server.SimpleDB;
 
-/* This is a version of the StudentMajor program that
- * accesses the SimpleDB classes directly (instead of
- * connecting to it as a JDBC client).  You can run it
- * without having the server also run.
- * 
- * These kind of programs are useful for debugging
- * your changes to the SimpleDB source code.
+/* CS4432-Project1 This file is used to test our clock replacement policy. Information on
+ * what should happen is located in the TESTING.txt file, as well as the output.
  */
 
 public class TestClock {

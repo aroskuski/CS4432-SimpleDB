@@ -17,10 +17,13 @@ import simpledb.file.*;
 class NewBufferMgr implements IBufferManager{
    private Buffer[] bufferpool;
    private int numAvailable;
-   /*CS4432-Project1*/
+   
+   /*CS4432-Project1 This queue is used to make it easier to find an empty buffer*/
    private Queue<Integer> free;
+   /*CS4432-Project1 When searching for a block, this hash map is used to find
+    * which buffer it is located it. By using a hash map, the search is faster*/
    private HashMap<Block, Buffer> blockIndex;
-   /*CS4432-Project1*/
+   /*CS4432-Project1 Determines what replacement policy is used*/
    private ReplacementPolicy rp;
    
    /**
@@ -36,30 +39,33 @@ class NewBufferMgr implements IBufferManager{
     * is called first.
     * @param numbuffs the number of buffer slots to allocate
     */
+   /*CS4432-Project1 This buffer manager takes in a boolean alongside the number of buffers.
+    * This boolean determines whether or not this buffer manager will use the clock replacement
+    * policy.*/
    NewBufferMgr(int numbuffs, boolean clock) {
       bufferpool = new Buffer[numbuffs];
       numAvailable = numbuffs;
+      
       free = new LinkedList<Integer>();
-      /*CS4432-Project1*/
+      
       blockIndex = new HashMap<Block, Buffer>();
       
       for (int i=0; i<numbuffs; i++){
     	  /*CS4432-Project1 creates a new buffer and makes sure it is
-    	   * given an id value*/
+    	   * given an id value. Since the buffer is empty, it is added
+    	   * to the free list*/
          bufferpool[i] = new Buffer(i);
          free.add(i);
       }
       
       /*CS4432-Project1 Initializes the replacement policies by
-       * setting the bufferpool references and filling the array
+       * setting the buffer pool references and filling the array
        * indexes with neutral numbers.*/
       if (clock){
     	  rp = new ClockReplacement(bufferpool);
       } else {
     	  rp = new LeastRecentlyUsed(bufferpool);
       }
-      
-      //LRU = new LeastRecentlyUsed(bufferpool);
       rp.fillArray(numbuffs);
    }
    
@@ -88,12 +94,14 @@ class NewBufferMgr implements IBufferManager{
          buff = chooseUnpinnedBuffer();
          if (buff == null)
             return null;
-         /*CS4432-Project1*/
+         /*CS4432-Project1 Removes the block from the buffer since it
+          * is going to be updated.*/
          if(blockIndex.get(buff.block()) != null){
         	 blockIndex.remove(buff.block());
          }
          buff.assignToBlock(blk);
-         /*CS4432-Project1*/
+         /*CS4432-Project1 Let's the hashtable know that the block at this
+          * value has been updated to be pinned.*/
          blockIndex.put(blk, buff);
       }
       if (!buff.isPinned())
@@ -101,7 +109,7 @@ class NewBufferMgr implements IBufferManager{
       buff.pin();
       
       /*CS4432-Project1 Let's the index array in the replacement
-       * policies know that this buffer is now pinned. For LRU,
+       * policy know that this buffer is now pinned. For LRU,
        * this means that this is the most recently used buffer,
        * for clock it means that this buffer is pinned.*/
       rp.pin(buff);
@@ -122,17 +130,19 @@ class NewBufferMgr implements IBufferManager{
       Buffer buff = chooseUnpinnedBuffer();
       if (buff == null)
          return null;
-      /*CS4432-Project1*/
+      /*CS4432-Project1 Updates the hash table to let it know that the block that existed at
+       * that buffer is going to updated so it is no longer valid.*/
       if(blockIndex.get(buff.block()) != null){
      	 blockIndex.remove(buff.block());
       }
       buff.assignToNew(filename, fmtr);
-      /*CS4432-Project1*/
+      /*CS4432-Project1 Updates the hash table to let it know that a new block exists at
+       * that buffer.*/
       blockIndex.put(buff.block(), buff);
       numAvailable--;
       buff.pin();
       
-      /*CS4432-Project1 Lets the replacement policies know that a buffer
+      /*CS4432-Project1 Lets the replacement policy know that a buffer
        * has been added and that it is now pinned. For LRU, it means this
        * that this buffer pinned, and for Clock, move the hand to the 
        * next buffer.*/
@@ -165,13 +175,16 @@ class NewBufferMgr implements IBufferManager{
    }
    
    private Buffer findExistingBuffer(Block blk) {
-	   /*CS4432-Project1*/
+	   /*CS4432-Project1 Gets the buffer that is located in the block. If there's no
+	    * buffer in this block, null is returned.*/
       return blockIndex.get(blk);
    }
 
    private synchronized Buffer chooseUnpinnedBuffer() {
 
-	   /*CS4432-Project1*/
+	   /*CS4432-Project1 Checks to see if there's any open buffers. If there aren't, then
+	    * something has to be replaced, so it calls the replacement policy to see which
+	    * buffer is going to be replaced.*/
 	   Integer buffIndex = free.poll();
 	   if(buffIndex != null){
 		   return bufferpool[buffIndex];

@@ -20,6 +20,9 @@ import simpledb.file.*;
  */
 public class BufferMgr {
    private static final long MAX_TIME = 10000; // 10 seconds
+   
+   /*CS4432-Project1 Makes it so that we can use either BasicBufferMgr, or
+    * NewBufferMgr*/
    private IBufferManager bufferMgr;
    
    /**

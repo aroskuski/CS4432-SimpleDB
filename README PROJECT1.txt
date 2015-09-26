@@ -19,7 +19,7 @@ TestLRU.java
 All of these files should be imported into simpledb2.10. If using Eclipse, Buffer, BasicBufferMgr, BufferMgr,
 ClockReplacement, LeastRecentlyUsed, NewBufferMgr, IBufferManager and ReplacementPolicy files should belong 
 under simpledb.buffer. SampleQueries, TestClock and TestLRU should belong under the default package of 
-studentyClient.simpledb. Examples should not belong in any folder and can exist in the uppermost level
+studentyClient.simpledb. Examples.sql should not belong in any folder and can exist in the uppermost level
 alongside the README file. In order to run SampleQueries, TestClock, or TestLRU, a blank database directory
 must be used and database directory will be studentdb for all three files.
 
