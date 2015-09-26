@@ -38,7 +38,7 @@ public class ClockReplacement implements ReplacementPolicy {
 	 * to be called if the buffer is full.*/
 	public int indexToReplace()
 	{
-		int clockHandStartLocation = clockHand;
+		int clockHandLastChange = clockHand;
 		int replacementIndex = -1;
 		
 		/*CS4432-Project1 Checks if current clock hand location is unpinned
@@ -62,20 +62,21 @@ public class ClockReplacement implements ReplacementPolicy {
 		 * is unpinned and had been checked before (1 value).
 		 * If one of them is, return that index. If not, set
 		 * the value of that index to 1 and move to the next
-		 * buffer until we get back to where we started from.*/
+		 * buffer until we the last index value we swapped from a 2 to a 1.*/
 		else 
 		{
 			NextBuffer();
-			while (clockHand != clockHandStartLocation)
+			while (clockHand != clockHandLastChange)
 			{
 				if (BufferIndexes[clockHand] != -1)
 				{
-					if (BufferIndexes[clockHand] != 1)
+					if (BufferIndexes[clockHand] == 1)
 					{
 						replacementIndex = clockHand;
 					}
 					else 
 					{
+						clockHandLastChange = clockHand;
 						BufferIndexes[clockHand] = 1;
 						NextBuffer();
 					}
@@ -87,8 +88,9 @@ public class ClockReplacement implements ReplacementPolicy {
 			}
 		}
 		
-		/* CS4432-Project1 This means that we are back where we started. As long
-		 * as this buffer is unpinned, it can be replaced.*/
+		/* CS4432-Project1 This means that we at the location where a buffer with
+		 * a 2 value was changed to a 1. As long as this buffer is unpinned, it 
+		 * can be replaced.*/
 		if (BufferIndexes[clockHand] != -1)
 		{
 			replacementIndex = clockHand;
@@ -102,7 +104,7 @@ public class ClockReplacement implements ReplacementPolicy {
 	private void NextBuffer()
 	{
 		clockHand++;
-		if (clockHand < BufferIndexes.length)
+		if (clockHand > BufferIndexes.length-1)
 		{
 			clockHand = 0;
 		}

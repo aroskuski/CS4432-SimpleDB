@@ -23,3 +23,11 @@ INSERT INTO Gear (Bid, BName, FavoredSub) VALUES (1, 'Rockenberg', 'Run Speed Up
 SELECT GName, BName, FavoredSub
 FROM Gear G, Brand B
 WHERE G.BrandId = B.Bid
+
+/*The expected output of this query is as follows:
+Gas Mask Forge Special Duration Up
+Moto Boots Rockenberg Run Speed Up
+Cherry Kicks Rockenberg Run Speed Up
+Octo Tee Cuttlegear Haunt
+Tinted Shades Zekko Special Saver
+Basic Tee Squidforce Damage Up*/
