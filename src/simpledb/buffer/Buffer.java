@@ -198,7 +198,12 @@ public class Buffer {
    public String toString(){
 	   String bufferString;
 	   String bufferId = Integer.toString(id);
-	   String block = blk.fileName();
+	   String block;
+	   if(blk != null){
+		   block = blk.fileName();
+	   } else {
+		   block = "null";
+	   }
 	   String pinned;
 	   if (isPinned() == true){
 		   pinned = "Pinned";
