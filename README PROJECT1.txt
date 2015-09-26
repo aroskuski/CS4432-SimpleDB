@@ -15,6 +15,7 @@ SampleQueries.java
 Examples.sql
 TestClock.java
 TestLRU.java
+SimpleDB.java
 
 All of these files should be imported into simpledb2.10. If using Eclipse, Buffer, BasicBufferMgr, BufferMgr,
 ClockReplacement, LeastRecentlyUsed, NewBufferMgr, IBufferManager and ReplacementPolicy files should belong 
