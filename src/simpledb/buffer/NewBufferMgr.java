@@ -196,7 +196,7 @@ class NewBufferMgr implements IBufferManager{
    }
    
    /*CS4432-Project1 The new toString method of the buffer manager. Uses
-    * the Buffer's newToString method to get the info.*/
+    * the Buffer's toString method to get the info.*/
    @Override
    public String toString(){
 	 String bufferInfo = "Replacement policy: " + rp.getClass().getSimpleName() + '\n';
