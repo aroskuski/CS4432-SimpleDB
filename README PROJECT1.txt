@@ -17,16 +17,13 @@ TestClock.java
 TestLRU.java
 SimpleDB.java
 
-All of these files should be imported into simpledb2.10. If using Eclipse, Buffer, BasicBufferMgr, BufferMgr,
-ClockReplacement, LeastRecentlyUsed, NewBufferMgr, IBufferManager and ReplacementPolicy files should belong 
-under simpledb.buffer. SampleQueries, TestClock and TestLRU should belong under the default package of 
-studentyClient.simpledb. Examples.sql should not belong in any folder and can exist in the uppermost level
-alongside the README file. In order to run SampleQueries, TestClock, or TestLRU, a blank database directory
-must be used and database directory will be studentdb for all three files. Run these files as if you were
-running StudentMajor.java.
+The whole folder should be imported into Eclipse
 
-Another option is to import the whole folder into eclipse and run the test files as you would run the
-StudentMajor.java file after starting up the directory.
+In order to run SampleQueries, TestClock, or TestLRU, a blank database directory must be used.
+For SampleQueries, the directory will be the one given as an argument to the server, and 
+for the Test* files, it will be studentdb.
+
+
 
 Part 2.4
 Both frame pinning and writing dirty frames to disk are both part of the Buffer.java file.
