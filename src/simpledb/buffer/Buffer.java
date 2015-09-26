@@ -200,7 +200,7 @@ public class Buffer {
 	   String bufferId = Integer.toString(id);
 	   String block;
 	   if(blk != null){
-		   block = blk.fileName();
+		   block = blk.fileName() + ":" + blk.number();
 	   } else {
 		   block = "null";
 	   }
