@@ -36,7 +36,7 @@ public class ClockReplacement implements ReplacementPolicy {
 	
 	/*CS4432-Project1 Uses clock replacement policy to replace a buffer. Only
 	 * to be called if the buffer is full.*/
-	public int indexToReplace()
+	public Buffer indexToReplace()
 	{
 		int clockHandLastChange = clockHand;
 		int replacementIndex = -1;
@@ -95,7 +95,10 @@ public class ClockReplacement implements ReplacementPolicy {
 		{
 			replacementIndex = clockHand;
 		}
-		return replacementIndex;
+		if (replacementIndex == -1) {
+			return null;
+		}
+		return bufferPool[replacementIndex];
 	}
 	
 	/* CS4432-Project1 Rotates the clock hand to the next buffer. If we are at

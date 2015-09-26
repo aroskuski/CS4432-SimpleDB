@@ -34,7 +34,7 @@ public class LeastRecentlyUsed implements ReplacementPolicy {
 	to find the largest number in BufferIndexes. The index with the 
 	largest number means that the buffer at that location was the
 	least recently used buffer. Only to be used if buffer is full.*/
-	public int indexToReplace()
+	public Buffer indexToReplace()
 	{
 		int storedIndex = -1;
 		int largestValue = 0;
@@ -45,7 +45,10 @@ public class LeastRecentlyUsed implements ReplacementPolicy {
 			}
 			
 		}
-		return storedIndex;
+		if (storedIndex == -1){
+			return null;
+		}
+		return bufferPool[storedIndex];
 		
 	}
 	
