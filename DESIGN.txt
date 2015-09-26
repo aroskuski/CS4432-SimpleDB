@@ -13,8 +13,8 @@ than 0 in this array, it means the buffer at that location is unpinned and can b
 Every time a buffer is added, pinned, or unpinned, every buffer that is unpinned has their 
 value in the index array incremented by 1. A larger number means that this buffer is more likely
 to be removed when there is no more space. When a replacement is needed, the index array is then 
-searched to find the largest number in it, and when it does, returns the buffer/index of the 
-buffer to be removed.  If all the buffers are pinned, it returns -1 meaning nothing can be replaced
+searched to find the largest number in it, and when it does, returns the buffer, which will be
+replaced. If all the buffers are pinned, it returns null meaning nothing can be replaced
 
 Clock Replacement starts similarly to Least Recently Used by setting all of its numbers in its
 array to 0. Whenever a buffer is pinned, the value in the array at that buffer's index is set
@@ -30,6 +30,15 @@ buffer the clock hand is on is unpinned. If it isn't, then it checks if the valu
 If it is a 1, that means this buffer can be removed and a new buffer can take it's place. If 
 not, then it has to check all of the other buffers before it returns back to the buffer the 
 clock hand started at and finds out that the information in the buffer can be replaced. However,
-if any other index values it checks has a value of 1, that buffer can be removed and it/its
-index is returned. If all of the buffers are pinned, it returns -1 meaning nothing can be replaced.
+if any other index values it checks has a value of 1, that buffer can be removed and it is
+returned. If all of the buffers are pinned, it returns null meaning nothing can be replaced.
 
+The buffer managers use these replacement policies when looking for an unpinned buffer. Before
+populating the buffer, a list of integers with all of the free buffers is created. Whenever a 
+new page is added, the list is polled and whatever value is received is the next empty buffer.
+This is an easy way to figure out which buffer empty, rather than having to search the entire
+buffer pool to find an empty buffer. A hashmap is also created to show which block is located in
+which buffer. Hashmaps have a constant search time of O(n), so it has faster search time and 
+automatically returns null if a block isn't associated with a buffer.
+
+Due to the use of all of new data structures, 

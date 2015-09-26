@@ -48,9 +48,10 @@ public class ClockReplacement implements ReplacementPolicy {
 		 * buffer.*/
 		if (BufferIndexes[clockHand] != -1)
 		{
-			if (BufferIndexes[clockHand] != 1)
+			if (BufferIndexes[clockHand] == 1)
 			{
 				replacementIndex = clockHand;
+				return bufferPool[replacementIndex];
 			}
 			else 
 			{
@@ -74,6 +75,7 @@ public class ClockReplacement implements ReplacementPolicy {
 					if (BufferIndexes[clockHand] == 1)
 					{
 						replacementIndex = clockHand;
+						return bufferPool[replacementIndex];
 					}
 					else 
 					{
@@ -89,7 +91,7 @@ public class ClockReplacement implements ReplacementPolicy {
 			}
 		}
 		
-		/* CS4432-Project1 This means that we at the location where a buffer with
+		/* CS4432-Project1 This means that we at the last location where a buffer with
 		 * a 2 value was changed to a 1. As long as this buffer is unpinned, it 
 		 * can be replaced.*/
 		if (BufferIndexes[clockHand] != -1)
