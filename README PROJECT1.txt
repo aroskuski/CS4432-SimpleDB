@@ -22,7 +22,11 @@ ClockReplacement, LeastRecentlyUsed, NewBufferMgr, IBufferManager and Replacemen
 under simpledb.buffer. SampleQueries, TestClock and TestLRU should belong under the default package of 
 studentyClient.simpledb. Examples.sql should not belong in any folder and can exist in the uppermost level
 alongside the README file. In order to run SampleQueries, TestClock, or TestLRU, a blank database directory
-must be used and database directory will be studentdb for all three files.
+must be used and database directory will be studentdb for all three files. Run these files as if you were
+running StudentMajor.java.
+
+Another option is to import the whole folder into eclipse and run the test files as you would run the
+StudentMajor.java file after starting up the directory.
 
 Part 2.4
 Both frame pinning and writing dirty frames to disk are both part of the Buffer.java file.
