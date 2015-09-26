@@ -20,3 +20,123 @@ So for LRU, the buffer pool goes from:
 In Clock, the buffer pool goes from:
 
  1* 2* 3 4* 5 6* 9* 8* -> 1* 2* 11 4* 5 6* 9* 8*
+ 
+ Output for LRU:
+ Picked up JAVA_TOOL_OPTIONS: -javaagent:/usr/share/java/jayatanaag.jar 
+prepping db
+new transaction: 1
+recovering existing database
+transaction 1 committed
+new transaction: 2
+create table Gear (GName varchar(20), BrandId int, MAbility varchar(20))
+insert into Gear(GName, BrandId, MAbility) values ('Gas Mask', 2, 'Tenacity')
+insert into Gear(GName, BrandId, MAbility) values ('Moto Boots', 1, 'Quick Respawn')
+insert into Gear(GName, BrandId, MAbility) values ('Cherry Kicks', 1, 'Stealth Jump')
+insert into Gear(GName, BrandId, MAbility) values ('Octo Tee', 3, 'Haunt')
+insert into Gear(GName, BrandId, MAbility) values ('Tinted Shades', 4, 'Last-Ditch Effort')
+insert into Gear(GName, BrandId, MAbility) values ('Basic Tee', 5, 'Quick Respawn')
+create table Brand (Bid int, BName varchar(20), FavoredSub varchar(20))
+insert into Brand(Bid, BName, FavoredSub) values (1, 'Rockenberg', 'Run Speed Up')
+insert into Brand(Bid, BName, FavoredSub) values (2, 'Forge', 'Special Duration Up')
+insert into Brand(Bid, BName, FavoredSub) values (3, 'Cuttlegear', 'NULL')
+insert into Brand(Bid, BName, FavoredSub) values (4, 'Zekko', 'Special Saver')
+insert into Brand(Bid, BName, FavoredSub) values (5, 'Squidforce', 'Damage Up')
+insert into Brand(Bid, BName, FavoredSub) values (6, 'Inkline', 'Defense Up')
+insert into Brand(Bid, BName, FavoredSub) values (7, 'Tentatek', 'Ink Recovery Up')
+transaction 2 committed
+Reinitializing file, log, and buffer managers
+Initial state of buffer
+Replacement policy: LeastRecentlyUsed
+[Buffer ID: 0, Block: null, Pin: Unpinned, Buffer ID: 1, Block: null, Pin: Unpinned, Buffer ID: 2, Block: null, Pin: Unpinned, Buffer ID: 3, Block: null, Pin: Unpinned, Buffer ID: 4, Block: null, Pin: Unpinned, Buffer ID: 5, Block: null, Pin: Unpinned, Buffer ID: 6, Block: null, Pin: Unpinned, Buffer ID: 7, Block: null, Pin: Unpinned]
+b1 = [file gear.tbl, block 0]
+b2 = [file gear.tbl, block 1]
+b3 = [file gear.tbl, block 2]
+b4 = [file gear.tbl, block 3]
+b5 = [file gear.tbl, block 4]
+b6 = [file brand.tbl, block 0]
+b7 = [file brand.tbl, block 1]
+b8 = [file brand.tbl, block 2]
+b9 = [file brand.tbl, block 3]
+b10 = [file brand.tbl, block 4]
+pinning b1-b8
+Replacement policy: LeastRecentlyUsed
+[Buffer ID: 0, Block: gear.tbl:0, Pin: Pinned, Buffer ID: 1, Block: gear.tbl:1, Pin: Pinned, Buffer ID: 2, Block: gear.tbl:2, Pin: Pinned, Buffer ID: 3, Block: gear.tbl:3, Pin: Pinned, Buffer ID: 4, Block: gear.tbl:4, Pin: Pinned, Buffer ID: 5, Block: brand.tbl:0, Pin: Pinned, Buffer ID: 6, Block: brand.tbl:1, Pin: Pinned, Buffer ID: 7, Block: brand.tbl:2, Pin: Pinned]
+unpinning b7
+Replacement policy: LeastRecentlyUsed
+[Buffer ID: 0, Block: gear.tbl:0, Pin: Pinned, Buffer ID: 1, Block: gear.tbl:1, Pin: Pinned, Buffer ID: 2, Block: gear.tbl:2, Pin: Pinned, Buffer ID: 3, Block: gear.tbl:3, Pin: Pinned, Buffer ID: 4, Block: gear.tbl:4, Pin: Pinned, Buffer ID: 5, Block: brand.tbl:0, Pin: Pinned, Buffer ID: 6, Block: brand.tbl:1, Pin: Unpinned, Buffer ID: 7, Block: brand.tbl:2, Pin: Pinned]
+pinning b9
+Replacement policy: LeastRecentlyUsed
+[Buffer ID: 0, Block: gear.tbl:0, Pin: Pinned, Buffer ID: 1, Block: gear.tbl:1, Pin: Pinned, Buffer ID: 2, Block: gear.tbl:2, Pin: Pinned, Buffer ID: 3, Block: gear.tbl:3, Pin: Pinned, Buffer ID: 4, Block: gear.tbl:4, Pin: Pinned, Buffer ID: 5, Block: brand.tbl:0, Pin: Pinned, Buffer ID: 6, Block: brand.tbl:3, Pin: Pinned, Buffer ID: 7, Block: brand.tbl:2, Pin: Pinned]
+attempting to pin b10 (should fail)
+Replacement policy: LeastRecentlyUsed
+[Buffer ID: 0, Block: gear.tbl:0, Pin: Pinned, Buffer ID: 1, Block: gear.tbl:1, Pin: Pinned, Buffer ID: 2, Block: gear.tbl:2, Pin: Pinned, Buffer ID: 3, Block: gear.tbl:3, Pin: Pinned, Buffer ID: 4, Block: gear.tbl:4, Pin: Pinned, Buffer ID: 5, Block: brand.tbl:0, Pin: Pinned, Buffer ID: 6, Block: brand.tbl:3, Pin: Pinned, Buffer ID: 7, Block: brand.tbl:2, Pin: Pinned]
+unpinning b5
+Replacement policy: LeastRecentlyUsed
+[Buffer ID: 0, Block: gear.tbl:0, Pin: Pinned, Buffer ID: 1, Block: gear.tbl:1, Pin: Pinned, Buffer ID: 2, Block: gear.tbl:2, Pin: Pinned, Buffer ID: 3, Block: gear.tbl:3, Pin: Pinned, Buffer ID: 4, Block: gear.tbl:4, Pin: Unpinned, Buffer ID: 5, Block: brand.tbl:0, Pin: Pinned, Buffer ID: 6, Block: brand.tbl:3, Pin: Pinned, Buffer ID: 7, Block: brand.tbl:2, Pin: Pinned]
+unpinning b3
+Replacement policy: LeastRecentlyUsed
+[Buffer ID: 0, Block: gear.tbl:0, Pin: Pinned, Buffer ID: 1, Block: gear.tbl:1, Pin: Pinned, Buffer ID: 2, Block: gear.tbl:2, Pin: Unpinned, Buffer ID: 3, Block: gear.tbl:3, Pin: Pinned, Buffer ID: 4, Block: gear.tbl:4, Pin: Unpinned, Buffer ID: 5, Block: brand.tbl:0, Pin: Pinned, Buffer ID: 6, Block: brand.tbl:3, Pin: Pinned, Buffer ID: 7, Block: brand.tbl:2, Pin: Pinned]
+pinning b7
+Replacement policy: LeastRecentlyUsed
+[Buffer ID: 0, Block: gear.tbl:0, Pin: Pinned, Buffer ID: 1, Block: gear.tbl:1, Pin: Pinned, Buffer ID: 2, Block: gear.tbl:2, Pin: Unpinned, Buffer ID: 3, Block: gear.tbl:3, Pin: Pinned, Buffer ID: 4, Block: brand.tbl:1, Pin: Pinned, Buffer ID: 5, Block: brand.tbl:0, Pin: Pinned, Buffer ID: 6, Block: brand.tbl:3, Pin: Pinned, Buffer ID: 7, Block: brand.tbl:2, Pin: Pinned]
+ 
+ 
+ Output for Clock:
+ Picked up JAVA_TOOL_OPTIONS: -javaagent:/usr/share/java/jayatanaag.jar 
+prepping db
+new transaction: 1
+recovering existing database
+transaction 1 committed
+new transaction: 2
+create table Gear (GName varchar(20), BrandId int, MAbility varchar(20))
+insert into Gear(GName, BrandId, MAbility) values ('Gas Mask', 2, 'Tenacity')
+insert into Gear(GName, BrandId, MAbility) values ('Moto Boots', 1, 'Quick Respawn')
+insert into Gear(GName, BrandId, MAbility) values ('Cherry Kicks', 1, 'Stealth Jump')
+insert into Gear(GName, BrandId, MAbility) values ('Octo Tee', 3, 'Haunt')
+insert into Gear(GName, BrandId, MAbility) values ('Tinted Shades', 4, 'Last-Ditch Effort')
+insert into Gear(GName, BrandId, MAbility) values ('Basic Tee', 5, 'Quick Respawn')
+create table Brand (Bid int, BName varchar(20), FavoredSub varchar(20))
+insert into Brand(Bid, BName, FavoredSub) values (1, 'Rockenberg', 'Run Speed Up')
+insert into Brand(Bid, BName, FavoredSub) values (2, 'Forge', 'Special Duration Up')
+insert into Brand(Bid, BName, FavoredSub) values (3, 'Cuttlegear', 'NULL')
+insert into Brand(Bid, BName, FavoredSub) values (4, 'Zekko', 'Special Saver')
+insert into Brand(Bid, BName, FavoredSub) values (5, 'Squidforce', 'Damage Up')
+insert into Brand(Bid, BName, FavoredSub) values (6, 'Inkline', 'Defense Up')
+insert into Brand(Bid, BName, FavoredSub) values (7, 'Tentatek', 'Ink Recovery Up')
+transaction 2 committed
+Reinitializing file, log, and buffer managers
+Initial state of buffer
+Replacement policy: ClockReplacement
+[Buffer ID: 0, Block: null, Pin: Unpinned, Buffer ID: 1, Block: null, Pin: Unpinned, Buffer ID: 2, Block: null, Pin: Unpinned, Buffer ID: 3, Block: null, Pin: Unpinned, Buffer ID: 4, Block: null, Pin: Unpinned, Buffer ID: 5, Block: null, Pin: Unpinned, Buffer ID: 6, Block: null, Pin: Unpinned, Buffer ID: 7, Block: null, Pin: Unpinned]
+b1 = [file gear.tbl, block 0]
+b2 = [file gear.tbl, block 1]
+b3 = [file gear.tbl, block 2]
+b4 = [file gear.tbl, block 3]
+b5 = [file gear.tbl, block 4]
+b6 = [file brand.tbl, block 0]
+b7 = [file brand.tbl, block 1]
+b8 = [file brand.tbl, block 2]
+b9 = [file brand.tbl, block 3]
+b10 = [file brand.tbl, block 4]
+pinning b1-b8
+Replacement policy: ClockReplacement
+[Buffer ID: 0, Block: gear.tbl:0, Pin: Pinned, Buffer ID: 1, Block: gear.tbl:1, Pin: Pinned, Buffer ID: 2, Block: gear.tbl:2, Pin: Pinned, Buffer ID: 3, Block: gear.tbl:3, Pin: Pinned, Buffer ID: 4, Block: gear.tbl:4, Pin: Pinned, Buffer ID: 5, Block: brand.tbl:0, Pin: Pinned, Buffer ID: 6, Block: brand.tbl:1, Pin: Pinned, Buffer ID: 7, Block: brand.tbl:2, Pin: Pinned]
+unpinning b7
+Replacement policy: ClockReplacement
+[Buffer ID: 0, Block: gear.tbl:0, Pin: Pinned, Buffer ID: 1, Block: gear.tbl:1, Pin: Pinned, Buffer ID: 2, Block: gear.tbl:2, Pin: Pinned, Buffer ID: 3, Block: gear.tbl:3, Pin: Pinned, Buffer ID: 4, Block: gear.tbl:4, Pin: Pinned, Buffer ID: 5, Block: brand.tbl:0, Pin: Pinned, Buffer ID: 6, Block: brand.tbl:1, Pin: Unpinned, Buffer ID: 7, Block: brand.tbl:2, Pin: Pinned]
+pinning b9
+Replacement policy: ClockReplacement
+[Buffer ID: 0, Block: gear.tbl:0, Pin: Pinned, Buffer ID: 1, Block: gear.tbl:1, Pin: Pinned, Buffer ID: 2, Block: gear.tbl:2, Pin: Pinned, Buffer ID: 3, Block: gear.tbl:3, Pin: Pinned, Buffer ID: 4, Block: gear.tbl:4, Pin: Pinned, Buffer ID: 5, Block: brand.tbl:0, Pin: Pinned, Buffer ID: 6, Block: brand.tbl:3, Pin: Pinned, Buffer ID: 7, Block: brand.tbl:2, Pin: Pinned]
+attempting to pin b10 (should fail)
+Replacement policy: ClockReplacement
+[Buffer ID: 0, Block: gear.tbl:0, Pin: Pinned, Buffer ID: 1, Block: gear.tbl:1, Pin: Pinned, Buffer ID: 2, Block: gear.tbl:2, Pin: Pinned, Buffer ID: 3, Block: gear.tbl:3, Pin: Pinned, Buffer ID: 4, Block: gear.tbl:4, Pin: Pinned, Buffer ID: 5, Block: brand.tbl:0, Pin: Pinned, Buffer ID: 6, Block: brand.tbl:3, Pin: Pinned, Buffer ID: 7, Block: brand.tbl:2, Pin: Pinned]
+unpinning b5
+Replacement policy: ClockReplacement
+[Buffer ID: 0, Block: gear.tbl:0, Pin: Pinned, Buffer ID: 1, Block: gear.tbl:1, Pin: Pinned, Buffer ID: 2, Block: gear.tbl:2, Pin: Pinned, Buffer ID: 3, Block: gear.tbl:3, Pin: Pinned, Buffer ID: 4, Block: gear.tbl:4, Pin: Unpinned, Buffer ID: 5, Block: brand.tbl:0, Pin: Pinned, Buffer ID: 6, Block: brand.tbl:3, Pin: Pinned, Buffer ID: 7, Block: brand.tbl:2, Pin: Pinned]
+unpinning b3
+Replacement policy: ClockReplacement
+[Buffer ID: 0, Block: gear.tbl:0, Pin: Pinned, Buffer ID: 1, Block: gear.tbl:1, Pin: Pinned, Buffer ID: 2, Block: gear.tbl:2, Pin: Unpinned, Buffer ID: 3, Block: gear.tbl:3, Pin: Pinned, Buffer ID: 4, Block: gear.tbl:4, Pin: Unpinned, Buffer ID: 5, Block: brand.tbl:0, Pin: Pinned, Buffer ID: 6, Block: brand.tbl:3, Pin: Pinned, Buffer ID: 7, Block: brand.tbl:2, Pin: Pinned]
+pinning b7
+Replacement policy: ClockReplacement
+[Buffer ID: 0, Block: gear.tbl:0, Pin: Pinned, Buffer ID: 1, Block: gear.tbl:1, Pin: Pinned, Buffer ID: 2, Block: brand.tbl:1, Pin: Pinned, Buffer ID: 3, Block: gear.tbl:3, Pin: Pinned, Buffer ID: 4, Block: gear.tbl:4, Pin: Unpinned, Buffer ID: 5, Block: brand.tbl:0, Pin: Pinned, Buffer ID: 6, Block: brand.tbl:3, Pin: Pinned, Buffer ID: 7, Block: brand.tbl:2, Pin: Pinned]
+ 

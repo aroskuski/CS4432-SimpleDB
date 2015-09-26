@@ -18,6 +18,9 @@ import simpledb.server.SimpleDB;
 public class TestClock {
 	public static void main(String[] args) {
 		try {
+			
+			System.out.println("prepping db");
+			
 			// analogous to the driver
 			SimpleDB.init("studentdb");
 			SimpleDB.initFileLogAndBufferMgr("studentdb", true);
@@ -63,10 +66,12 @@ public class TestClock {
 			
 			tx.commit();
 			
+			System.out.println("Reinitializing file, log, and buffer managers");
 			SimpleDB.initFileLogAndBufferMgr("studentdb", true);
 			
 			BufferMgr bm = SimpleDB.bufferMgr();
 			
+			System.out.println("Initial state of buffer");
 			System.out.println(bm);
 			
 			Block b1 = new Block("gear.tbl", 0);
@@ -80,6 +85,19 @@ public class TestClock {
 			Block b9 = new Block("brand.tbl", 3);
 			Block b10 = new Block("brand.tbl", 4);
 			
+			System.out.println("b1 = " + b1);
+			System.out.println("b2 = " + b2);
+			System.out.println("b3 = " + b3);
+			System.out.println("b4 = " + b4);
+			System.out.println("b5 = " + b5);
+			System.out.println("b6 = " + b6);
+			System.out.println("b7 = " + b7);
+			System.out.println("b8 = " + b8);
+			System.out.println("b9 = " + b9);
+			System.out.println("b10 = " + b10);
+			
+			System.out.println("pinning b1-b8");
+			
 			Buffer buff1 = bm.pin(b1);
 			Buffer buff2 = bm.pin(b2);
 			Buffer buff3 = bm.pin(b3);
@@ -91,22 +109,30 @@ public class TestClock {
 
 			System.out.println(bm);
 			
+			System.out.println("unpinning b7");
 			bm.unpin(buff7);
 			System.out.println(bm);
 			
+			System.out.println("pinning b9");
 			bm.pin(b9);
 			System.out.println(bm);
 			
+			System.out.println("attempting to pin b10 (should fail)");
 			try{
 				bm.pin(b10);
 			} catch (BufferAbortException e){
 				System.out.println(bm);
 			}
 			
+			System.out.println("unpinning b5");
 			bm.unpin(buff5);
 			System.out.println(bm);
+			
+			System.out.println("unpinning b3");
 			bm.unpin(buff3);
 			System.out.println(bm);
+			
+			System.out.println("pinning b7");
 			bm.pin(b7);
 			System.out.println(bm);
 		}
