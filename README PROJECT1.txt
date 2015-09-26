@@ -17,7 +17,7 @@ TestClock.java
 TestLRU.java
 SimpleDB.java
 
-The whole folder should be imported into Eclipse
+The whole contents of the zip archive should be imported into Eclipse
 
 In order to run SampleQueries, TestClock, or TestLRU, a blank database directory must be used.
 For SampleQueries, the directory will be the one given as an argument to the server, and 
