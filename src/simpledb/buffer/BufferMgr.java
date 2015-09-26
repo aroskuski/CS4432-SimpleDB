@@ -20,7 +20,7 @@ import simpledb.file.*;
  */
 public class BufferMgr {
    private static final long MAX_TIME = 10000; // 10 seconds
-   private BasicBufferMgr bufferMgr;
+   private IBufferManager bufferMgr;
    
    /**
     * Creates a new buffer manager having the specified 
