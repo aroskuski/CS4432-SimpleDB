@@ -63,9 +63,10 @@ public class IndexMgr {
       RecordFile rf = new RecordFile(ti, tx);
       while (rf.next())
          if (rf.getString("tablename").equals(tblname)) {
+         String idxtype = rf.getString("indextype");
          String idxname = rf.getString("indexname");
          String fldname = rf.getString("fieldname");
-         IndexInfo ii = new IndexInfo(idxname, tblname, fldname, tx);
+         IndexInfo ii = new IndexInfo(idxtype, idxname, tblname, fldname, tx);
          result.put(fldname, ii);
       }
       rf.close();
