@@ -25,6 +25,8 @@ public class FileMgr {
    private File dbDirectory;
    private boolean isNew;
    private Map<String,FileChannel> openFiles = new HashMap<String,FileChannel>();
+   /*Counts the number of IOs used*/
+   private long IOs;
 
    /**
     * Creates a file manager for the specified database.
@@ -48,6 +50,8 @@ public class FileMgr {
       for (String filename : dbDirectory.list())
          if (filename.startsWith("temp"))
          new File(dbDirectory, filename).delete();
+      /*intializes the IOs*/
+      IOs = 0;
    }
 
    /**
@@ -64,6 +68,8 @@ public class FileMgr {
       catch (IOException e) {
          throw new RuntimeException("cannot read block " + blk);
       }
+      /*Increments the number of IOs used*/
+      IOs++;
    }
 
    /**
@@ -80,6 +86,8 @@ public class FileMgr {
       catch (IOException e) {
          throw new RuntimeException("cannot write block" + blk);
       }
+      /*Increments the number of IOs used*/
+      IOs++;
    }
 
    /**
@@ -138,5 +146,10 @@ public class FileMgr {
          openFiles.put(filename, fc);
       }
       return fc;
+   }
+   
+   /*returns the IOs*/
+   public long IONumber(){
+	   return IOs;
    }
 }
