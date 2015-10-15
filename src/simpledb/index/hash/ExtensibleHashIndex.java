@@ -21,6 +21,7 @@ public class ExtensibleHashIndex implements Index {
 	private TableScan ts = null;
 	private TableInfo bucketTi, indTi;
 	private int precision;
+	private int bucketPrecision;
 	private ExtensibleHashBucket bucket = null;
 
 	/**
@@ -95,9 +96,14 @@ public class ExtensibleHashIndex implements Index {
 		while(ts.next()){
 			if(ts.getInt("hash") == hash){
 				bucketName += ts.getString("bucket");
+				
 				break;
 			}
 		}
+		
+		bucketPrecision = ts.getString("bucket").length();
+		
+		ts.close();
 		
 		bucket = new ExtensibleHashBucket(bucketName, sch, tx);
 		
@@ -130,6 +136,12 @@ public class ExtensibleHashIndex implements Index {
 	 */
 	public void insert(Constant val, RID rid) {
 		beforeFirst(val);
+		if(precision < 32){
+			if(bucket.isFull()){
+				split();
+			}
+			bucket.beforeFirst(val);
+		}
 		bucket.insert(val, rid);
 	}
 
@@ -172,5 +184,9 @@ public class ExtensibleHashIndex implements Index {
 	
 	private int genBitmask(){
 		return (~0x0) >> (32 - precision);
+	}
+	
+	private void split(){
+		
 	}
 }
