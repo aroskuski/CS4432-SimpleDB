@@ -128,7 +128,7 @@ public class ExtensibleHashIndex implements Index {
 	 */
 	public void insert(Constant val, RID rid) {
 		beforeFirst(val);
-		if(precision < 32){
+		if(bucketPrecision < 32){
 			if(bucket.isFull()){
 				split();
 			}
