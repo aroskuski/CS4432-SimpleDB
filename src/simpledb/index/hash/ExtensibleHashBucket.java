@@ -91,6 +91,7 @@ public class ExtensibleHashBucket {
 				ts.setInt("block", bts.getInt("block"));
 				ts.setInt("id", bts.getInt("id"));
 				ts.setVal("dataval", bts.getVal("dataval"));
+				bts.delete();
 			}
 		}
 	}

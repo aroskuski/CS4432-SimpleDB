@@ -3,7 +3,10 @@ package simpledb.index.hash;
 import simpledb.tx.Transaction;
 import simpledb.record.*;
 import simpledb.query.*;
-import simpledb.buffer.PageFormatter;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import simpledb.index.Index;
 
 /**
@@ -18,8 +21,7 @@ public class ExtensibleHashIndex implements Index {
 	private Schema sch;
 	private Transaction tx;
 	private Constant searchkey = null;
-	private TableScan ts = null;
-	private TableInfo bucketTi, indTi;
+	private TableInfo indTi;
 	private int precision;
 	private int bucketPrecision;
 	private ExtensibleHashBucket bucket = null;
@@ -217,6 +219,34 @@ public class ExtensibleHashIndex implements Index {
 	}
 	
 	private void splitIndex(){
+		TableScan ts = new TableScan(indTi, tx);
+		List<ExtensibleHashIndexTuple> hashes = new ArrayList<ExtensibleHashIndexTuple>();
+		while(ts.next()){
+			hashes.add(new ExtensibleHashIndexTuple(ts.getInt("hash"), 
+					ts.getString("bucket")));
+		}
+		
+		ts.beforeFirst();
+		for (ExtensibleHashIndexTuple hash : hashes){
+			ts.insert();
+			ts.setInt("hash", hash.hash);
+			ts.setInt("precision", precision + 1);
+			ts.setString("bucket", hash.bucket);
+			ts.insert();
+			ts.setInt("hash", hash.hash | (1 << precision));
+			ts.setInt("precision", precision + 1);
+			ts.setString("bucket", hash.bucket);
+		}
+		
+		ts.beforeFirst();
+		
+		while(next()){
+			if(ts.getInt("precision") == precision){
+				ts.delete();
+			}
+		}
+		
+		precision++;
 		
 	}
 	
