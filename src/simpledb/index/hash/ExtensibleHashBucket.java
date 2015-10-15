@@ -13,11 +13,12 @@ public class ExtensibleHashBucket {
 	private Transaction tx;
 	private Constant searchkey = null;
 	private TableScan ts = null;
+	public final String name;
 	
 	public ExtensibleHashBucket(String bucketName, Schema bucketSch, Transaction tx) {
 		this.ti = new TableInfo(bucketName, bucketSch);
 		this.tx = tx;
-
+		this.name = bucketName;
 	}
 	
 	public void beforeFirst(Constant searchkey) {
@@ -74,5 +75,23 @@ public class ExtensibleHashBucket {
 		}
 		
 		return tuples >= MAX_ENTRIES;
+	}
+	
+	private TableScan getTableScan(){
+		return ts;
+	}
+	
+	public void copyfrom(ExtensibleHashBucket b, int hash, int bitmask){
+		TableScan bts = b.getTableScan();
+		ts = new TableScan(ti, tx);
+		bts.beforeFirst();
+		while(bts.next()){
+			if((bts.getVal("dataVal").hashCode() & bitmask) == hash){
+				ts.insert();
+				ts.setInt("block", bts.getInt("block"));
+				ts.setInt("id", bts.getInt("id"));
+				ts.setVal("dataval", bts.getVal("dataval"));
+			}
+		}
 	}
 }

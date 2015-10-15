@@ -61,16 +61,6 @@ public class ExtensibleHashIndex implements Index {
 			this.precision = ts.getInt("precision");
 			ts.close();
 		}
-		
-		/*
-		// deal with the buckets
-		String buckettbl = idxname + "leaf";
-		bucketTi = new TableInfo(buckettbl, bucketSch);
-		if (tx.size(bucketTi.fileName()) == 0){
-			tx.append(bucketTi.fileName(), new EHPageFormatter(bucketTi, -1, 1));
-			tx.append(bucketTi.fileName(), new EHPageFormatter(bucketTi, -1, 1));
-		}
-		*/
 
 
 		
@@ -140,7 +130,7 @@ public class ExtensibleHashIndex implements Index {
 			if(bucket.isFull()){
 				split();
 			}
-			bucket.beforeFirst(val);
+			beforeFirst(val);
 		}
 		bucket.insert(val, rid);
 	}
@@ -183,10 +173,58 @@ public class ExtensibleHashIndex implements Index {
 	}
 	
 	private int genBitmask(){
+		return genBitmask(precision);
+	}
+	
+	private int genBitmask(int precision){
 		return (~0x0) >> (32 - precision);
 	}
 	
 	private void split(){
+		if(bucketPrecision == precision){
+			splitIndex();
+		}
 		
+		TableScan ts = new TableScan(indTi, tx);
+		
+		String bucketName = bucket.name;
+		bucketName = bucketName.substring(bucketName.length() - (1 + bucketPrecision), 
+				bucketName.length() - 1);
+		int bucketHash = Integer.parseInt(bucketName, 2);
+		int bucketHash1 = bucketHash | (1 << bucketPrecision);
+		
+		while(ts.next()){
+			int currentHash = ts.getInt("hash");
+			
+			if((currentHash & genBitmask(bucketPrecision + 1)) == bucketHash){
+				String newName = genBucketName(bucketHash, bucketPrecision + 1);
+				ts.setString("bucket", newName);
+				ExtensibleHashBucket b = new ExtensibleHashBucket(newName, sch, tx);
+				b.copyfrom(bucket, bucketHash, genBitmask(bucketPrecision + 1));
+			}
+			
+			if((currentHash & genBitmask(bucketPrecision + 1)) == bucketHash1){
+				String newName = genBucketName(bucketHash1, bucketPrecision + 1);
+				ts.setString("bucket", newName);
+				ExtensibleHashBucket b = new ExtensibleHashBucket(newName, sch, tx);
+				b.copyfrom(bucket, bucketHash1, genBitmask(bucketPrecision + 1));
+			}
+
+		}
+		
+		ts.close();
+		
+	}
+	
+	private void splitIndex(){
+		
+	}
+	
+	private String genBucketName(int hash, int precision){
+		String result = Integer.toString(hash, 2);
+		while(result.length() < precision){
+			result = "0" + result;
+		}
+		return result;
 	}
 }
