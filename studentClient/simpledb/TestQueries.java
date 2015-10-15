@@ -12,26 +12,32 @@ import simpledb.tx.Transaction;
 public class TestQueries {
 	public static void main(String[] args) {	
 		Connection conn = null;
-			try {
-				// Step 1: connect to database server
-				Driver d = new SimpleDriver();
-				conn = d.connect("jdbc:simpledb://localhost", null);
+			try {		
+				// analogous to the driver
+				SimpleDB.init("studentdb");
 
-				// Step 2: execute the query
-				Statement stmt = conn.createStatement();
+				// analogous to the connection
+				Transaction tx = new Transaction();
 				String qry = "select b1,b2,a1,a2 from test5, test2 where b1 = a1 ";
+				
+				Plan p = SimpleDB.planner().createQueryPlan(qry, tx);
+				
+				/*CS4432 Gets the number of IOs at the start*/
 				long StartIOs = SimpleDB.fileMgr().IONumber();
-				ResultSet rs = stmt.executeQuery(qry);
+				
+				// analogous to the result set
+				Scan s = p.open();
 
-				// Step 3: loop through the result set
-				System.out.println("Name\tMajor");
-				while (rs.next()) {
-					String a1 = rs.getString("a1"); //SimpleDB stores field names
-					String b1 = rs.getString("b1"); //in lower case
+				while (s.next()) {
+					String a1 = s.getString("a1"); //SimpleDB stores field names
+					String b1 = s.getString("b1"); //in lower case
 					System.out.println(a1 + "\t" + b1);
 				}
-				rs.close();
+				s.close();
+				tx.commit();
 				
+				/*CS4432 Gets the number of IOs at the end and gets the total IOs
+				 * for the transaction*/
 				long EndIOs = SimpleDB.fileMgr().IONumber();
 				System.out.println((EndIOs - StartIOs));
 		}

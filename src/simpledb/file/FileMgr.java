@@ -25,7 +25,7 @@ public class FileMgr {
    private File dbDirectory;
    private boolean isNew;
    private Map<String,FileChannel> openFiles = new HashMap<String,FileChannel>();
-   /*Counts the number of IOs used*/
+   /*CS4432 Counts the number of IOs used*/
    private long IOs;
 
    /**
@@ -68,7 +68,7 @@ public class FileMgr {
       catch (IOException e) {
          throw new RuntimeException("cannot read block " + blk);
       }
-      /*Increments the number of IOs used*/
+      /*CS4432 Increments the number of IOs used*/
       IOs++;
    }
 
@@ -86,7 +86,7 @@ public class FileMgr {
       catch (IOException e) {
          throw new RuntimeException("cannot write block" + blk);
       }
-      /*Increments the number of IOs used*/
+      /*CS4432 Increments the number of IOs used*/
       IOs++;
    }
 
@@ -148,7 +148,7 @@ public class FileMgr {
       return fc;
    }
    
-   /*returns the IOs*/
+   /*CS4432 returns the IOs*/
    public long IONumber(){
 	   return IOs;
    }
