@@ -65,4 +65,14 @@ public class ExtensibleHashBucket {
 			ts.close();
 		}
 	}
+	
+	public boolean isFull(){
+		ts.beforeFirst();
+		int tuples = 0;
+		while (ts.next()){
+			tuples++;
+		}
+		
+		return tuples >= MAX_ENTRIES;
+	}
 }
