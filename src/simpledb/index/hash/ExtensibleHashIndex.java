@@ -25,6 +25,7 @@ public class ExtensibleHashIndex implements Index {
 	private int precision;
 	private int bucketPrecision;
 	private ExtensibleHashBucket bucket = null;
+	private String bucketPostfix = null;
 
 	/**
 	 * Opens a hash index for the specified index.
@@ -87,13 +88,14 @@ public class ExtensibleHashIndex implements Index {
 		String bucketName = idxname;
 		while(ts.next()){
 			if(ts.getInt("hash") == hash){
-				bucketName += ts.getString("bucket");
+				bucketName = bucketName + ts.getString("bucket");
 				
 				break;
 			}
 		}
 		
 		bucketPrecision = ts.getString("bucket").length();
+		bucketPostfix = ts.getString("bucket");
 		
 		ts.close();
 		
@@ -129,11 +131,13 @@ public class ExtensibleHashIndex implements Index {
 	public void insert(Constant val, RID rid) {
 		beforeFirst(val);
 		if(bucketPrecision < 32){
-			if(bucket.isFull()){
+			while(bucket.isFull() && bucketPrecision < 32){
 				split();
+				beforeFirst(val);
 			}
 			beforeFirst(val);
 		}
+		
 		bucket.insert(val, rid);
 	}
 
@@ -179,7 +183,7 @@ public class ExtensibleHashIndex implements Index {
 	}
 	
 	private int genBitmask(int precision){
-		return (~0x0) >> (32 - precision);
+		return (~0x0) >>> (32 - precision);
 	}
 	
 	private void split(){
@@ -190,8 +194,7 @@ public class ExtensibleHashIndex implements Index {
 		TableScan ts = new TableScan(indTi, tx);
 		
 		String bucketName = bucket.name;
-		bucketName = bucketName.substring(bucketName.length() - (1 + bucketPrecision), 
-				bucketName.length() - 1);
+		bucketName = bucketPostfix;
 		int bucketHash = Integer.parseInt(bucketName, 2);
 		int bucketHash1 = bucketHash | (1 << bucketPrecision);
 		
