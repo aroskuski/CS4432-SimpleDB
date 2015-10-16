@@ -86,7 +86,7 @@ public class ExtensibleHashBucket {
 		ts = new TableScan(ti, tx);
 		bts.beforeFirst();
 		while(bts.next()){
-			if((bts.getVal("dataVal").hashCode() & bitmask) == hash){
+			if((bts.getVal("dataval").hashCode() & bitmask) == hash){
 				ts.insert();
 				ts.setInt("block", bts.getInt("block"));
 				ts.setInt("id", bts.getInt("id"));
