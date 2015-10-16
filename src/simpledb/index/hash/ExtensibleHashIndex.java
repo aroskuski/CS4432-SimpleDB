@@ -9,6 +9,9 @@ import java.util.List;
 
 import simpledb.index.Index;
 
+/*CS4432 The code for the operations of the extensible hash
+ * Index. Code is based on the HashIndex.java file*/
+
 /**
  * A static hash implementation of the Index interface.
  * A fixed number of buckets is allocated (currently, 100),
@@ -182,10 +185,14 @@ public class ExtensibleHashIndex implements Index {
 		return genBitmask(precision);
 	}
 	
+	/*CS4432 Used to compare the bitmask of the bucket
+	 * to new elements when they are added to index*/
 	private int genBitmask(int precision){
 		return (~0x0) >>> (32 - precision);
 	}
 	
+	/*CS4432 Used when there are too many elements in a single
+	 * index, we have to split the bucket. */
 	private void split(){
 		if(bucketPrecision == precision){
 			splitIndex();
@@ -221,6 +228,9 @@ public class ExtensibleHashIndex implements Index {
 		
 	}
 	
+	/*CS4432 If a bucket has the same precision as the whole index,
+	 * then we need to increase the index precision and have that
+	 * be reflected in the rest of the buckets*/
 	private void splitIndex(){
 		TableScan ts = new TableScan(indTi, tx);
 		List<ExtensibleHashIndexTuple> hashes = new ArrayList<ExtensibleHashIndexTuple>();
@@ -252,7 +262,7 @@ public class ExtensibleHashIndex implements Index {
 		precision++;
 		
 	}
-	
+	/*Creates the name of the bucket*/
 	private String genBucketName(int hash, int precision){
 		String result = Integer.toString(hash, 2);
 		while(result.length() < precision){

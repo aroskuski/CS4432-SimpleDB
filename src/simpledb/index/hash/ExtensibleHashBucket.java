@@ -7,6 +7,7 @@ import simpledb.record.Schema;
 import simpledb.record.TableInfo;
 import simpledb.tx.Transaction;
 
+/*CS4432 Describes each bucket in the extensible hash index*/
 public class ExtensibleHashBucket {
 	private static final int MAX_ENTRIES = 30;
 	private TableInfo ti;
@@ -21,12 +22,14 @@ public class ExtensibleHashBucket {
 		this.name = bucketName;
 	}
 	
+	/*CS4432 Sets the search key in the index and creates a new tablescan*/
 	public void beforeFirst(Constant searchkey) {
 		close();
 		this.searchkey = searchkey;
 		ts = new TableScan(ti, tx);
 	}
 	
+	/*CS4432 Gets the next item in the table*/
 	public boolean next() {
 		while (ts.next()){
 			if (ts.getVal("dataval").equals(searchkey)){
@@ -37,12 +40,14 @@ public class ExtensibleHashBucket {
 		return false;
 	}
 	
+	/*CS4432 Gets the id of the record*/
 	public RID getDataRid() {
 		int blknum = ts.getInt("block");
 		int id = ts.getInt("id");
 		return new RID(blknum, id);
 	}
 	
+	/*CS4432 Adds an element from the extensible hash index*/
 	public void insert(Constant val, RID rid) {
 		beforeFirst(val);
 		ts.insert();
@@ -51,6 +56,7 @@ public class ExtensibleHashBucket {
 		ts.setVal("dataval", val);
 	}
 	
+	/*CS4432 Removes an element from the extensible hash index*/
 	public void delete(Constant val, RID rid) {
 		beforeFirst(val);
 		while(next()){
@@ -61,12 +67,14 @@ public class ExtensibleHashBucket {
 		}
 	}
 	
+	/*CS4432 Closes the hash index*/
 	public void close(){
 		if (ts != null){
 			ts.close();
 		}
 	}
 	
+	/*CS4432 Checks if the index is full*/
 	public boolean isFull(){
 		ts.beforeFirst();
 		int tuples = 0;
@@ -81,6 +89,7 @@ public class ExtensibleHashBucket {
 		return ts;
 	}
 	
+	/*CS4432 Copies information from a separate bucket*/
 	public void copyfrom(ExtensibleHashBucket b, int hash, int bitmask){
 		TableScan bts = b.getTableScan();
 		ts = new TableScan(ti, tx);
