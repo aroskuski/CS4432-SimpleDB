@@ -37,7 +37,7 @@ public class IndexUpdatePlanner implements UpdatePlanner {
          System.out.println("Modify field " + fldname + " to val " + val);
          s.setVal(fldname, val);
          
-         /*Code to modify the index*/
+         /*CS4432 Code to modify the index*/
          IndexInfo ii = indexes.get(fldname);
          if (ii != null) {
             Index idx = ii.open();
@@ -62,7 +62,7 @@ public class IndexUpdatePlanner implements UpdatePlanner {
          RID rid = s.getRid();
          for (String fldname : indexes.keySet()) {
         	 
-        	 /*Code to modify the index*/
+        	 /*CS4432 Code to modify the index*/
             Constant val = s.getVal(fldname);
             Index idx = indexes.get(fldname).open();
             idx.delete(val, rid);

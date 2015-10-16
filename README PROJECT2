@@ -1,0 +1,26 @@
+Team 6
+Andrew Roskuski
+Kevin Zhao
+
+These files were added or modified for this project
+
+FileMgr.java
+ExtensibleHashBucket.java
+ExtensibleHashIndex.java
+ExtensibleHashIndexTuple.java
+IndexUpdatePlanner.java
+SmartMergeJoinPlan.java
+SmartMergeJoinScan.java
+SmartSortPlan.java
+SmartSortScan.java
+IndexInfo.java
+IndexMgr.java
+MetadataMgr.java
+SimpleDB.java
+CreateTestTables.java
+TestQueries.java
+
+The whole contents of the zip archive should be imported into Eclipse
+
+When the TestQueries is run, the folder containing the database must be deleted
+
