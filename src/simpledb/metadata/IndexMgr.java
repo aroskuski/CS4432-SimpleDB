@@ -22,6 +22,7 @@ public class IndexMgr {
     */
    public IndexMgr(boolean isnew, TableMgr tblmgr, Transaction tx) {
       if (isnew) {
+    	  /*CS4432 IndexType have been added*/
          Schema sch = new Schema();
          sch.addStringField("indextype", MAX_NAME);
          sch.addStringField("indexname", MAX_NAME);
@@ -41,6 +42,7 @@ public class IndexMgr {
     * @param fldname the name of the indexed field
     * @param tx the calling transaction
     */
+   /*CS4432 IndexType have been added*/
    public void createIndex(String idxtype, String idxname, String tblname, String fldname, Transaction tx) {
       RecordFile rf = new RecordFile(ti, tx);
       rf.insert();
@@ -58,6 +60,7 @@ public class IndexMgr {
     * @param tx the calling transaction
     * @return a map of IndexInfo objects, keyed by their field names
     */
+   /*CS4432 IndexType have been added*/
    public Map<String,IndexInfo> getIndexInfo(String tblname, Transaction tx) {
       Map<String,IndexInfo> result = new HashMap<String,IndexInfo>();
       RecordFile rf = new RecordFile(ti, tx);
