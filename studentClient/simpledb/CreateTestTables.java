@@ -6,7 +6,7 @@ import java.sql.Statement;
 import java.util.Random;
 import simpledb.remote.SimpleDriver;
 public class CreateTestTables {
- final static int maxSize=100000;
+ final static int maxSize=100;
  /**
   * @param args
   */
@@ -42,14 +42,18 @@ public class CreateTestTables {
      "  a2 int"+
    ")");
    s.executeUpdate("Create table test5" +
-     "( b1 int," +
-     "  b2 int"+
+     "( a1 int," +
+     "  a2 int"+
+   ")");
+   s.executeUpdate("Create table test6" +
+     "( a1 int," +
+     "  a2 int"+
    ")");
 
-   s.executeUpdate("create sh index idx1 on test1 (a1)");
-   s.executeUpdate("create eh index idx2 on test2 (a1)");
-   s.executeUpdate("create bt index idx3 on test3 (a1)");
-   for(int i=1;i<6;i++)
+   s.executeUpdate("create sh index idx1 on test2 (a1)");
+   s.executeUpdate("create eh index idx2 on test3 (a1)");
+   s.executeUpdate("create bt index idx3 on test4 (a1)");
+   for(int i=1;i<7;i++)
    {
     if(i!=5)
     {

@@ -14,32 +14,133 @@ public class TestQueries {
 		Connection conn = null;
 			try {		
 				// analogous to the driver
-				SimpleDB.init("studentdb");
+				SimpleDB.init("cs4432db");
 
 				// analogous to the connection
 				Transaction tx = new Transaction();
-				String qry = "select b1,b2,a1,a2 from test5, test2 where b1 = a1 ";
-				
-				Plan p = SimpleDB.planner().createQueryPlan(qry, tx);
+				/*CS4432 Does a join on test5 and test2*/
+				String qry = "select a1,a2 from test5, test2 where a1 = a2 ";
 				
 				/*CS4432 Gets the number of IOs at the start*/
 				long StartIOs = SimpleDB.fileMgr().IONumber();
+				
+				Plan p = SimpleDB.planner().createQueryPlan(qry, tx);
 				
 				// analogous to the result set
 				Scan s = p.open();
 
 				while (s.next()) {
 					String a1 = s.getString("a1"); //SimpleDB stores field names
-					String b1 = s.getString("b1"); //in lower case
-					System.out.println(a1 + "\t" + b1);
+					String a2 = s.getString("a2"); //in lower case
+					System.out.println(a1 + "\t" + a2);
+				}
+				s.close();
+				tx.commit();
+					
+				/*CS4432 Gets the number of IOs at the end and gets the total IOs
+				 * for the transaction*/
+				long EndIOs = SimpleDB.fileMgr().IONumber();
+				System.out.println("IOs for test5 & test2 join: " + (EndIOs - StartIOs));
+				
+				tx = new Transaction();
+				/*CS4432 Does a join on test5 and test3*/
+				qry = "select a1,a2 from test5, test3 where a1 = a2 ";
+				
+				/*CS4432 Gets the number of IOs at the start*/
+				StartIOs = SimpleDB.fileMgr().IONumber();
+				
+				p = SimpleDB.planner().createQueryPlan(qry, tx);
+				
+				// analogous to the result set
+				s = p.open();
+
+				while (s.next()) {
+					String a1 = s.getString("a1"); //SimpleDB stores field names
+					String a2 = s.getString("a2"); //in lower case
+					System.out.println(a1 + "\t" + a2);
 				}
 				s.close();
 				tx.commit();
 				
 				/*CS4432 Gets the number of IOs at the end and gets the total IOs
 				 * for the transaction*/
-				long EndIOs = SimpleDB.fileMgr().IONumber();
-				System.out.println((EndIOs - StartIOs));
+				EndIOs = SimpleDB.fileMgr().IONumber();
+				System.out.println("IOs for test5 & test3 join: " + (EndIOs - StartIOs));
+				
+				tx = new Transaction();
+				/*CS4432 Does a join on test5 and test4*/
+				qry = "select a1,a2 from test5, test4 where a1 = a2 ";
+				
+				/*CS4432 Gets the number of IOs at the start*/
+				StartIOs = SimpleDB.fileMgr().IONumber();
+				
+				p = SimpleDB.planner().createQueryPlan(qry, tx);
+				
+				// analogous to the result set
+				s = p.open();
+
+				while (s.next()) {
+					String a1 = s.getString("a1"); //SimpleDB stores field names
+					String a2 = s.getString("a2"); //in lower case
+					System.out.println(a1 + "\t" + a2);
+				}
+				s.close();
+				tx.commit();
+				
+				/*CS4432 Gets the number of IOs at the end and gets the total IOs
+				 * for the transaction*/
+				EndIOs = SimpleDB.fileMgr().IONumber();
+				System.out.println("IOs for test5 & test4 join: " + (EndIOs - StartIOs));
+				
+				tx = new Transaction();
+				/*CS4432 Does a join on test5 and test1*/
+				qry = "select a1,a2 from test5, test1 where a1 = a2 ";
+				
+				/*CS4432 Gets the number of IOs at the start*/
+				StartIOs = SimpleDB.fileMgr().IONumber();
+				
+				p = SimpleDB.planner().createQueryPlan(qry, tx);
+				
+				// analogous to the result set
+				s = p.open();
+
+				while (s.next()) {
+					String a1 = s.getString("a1"); //SimpleDB stores field names
+					String a2 = s.getString("a2"); //in lower case
+					System.out.println(a1 + "\t" + a2);
+				}
+				s.close();
+				tx.commit();
+				
+				/*CS4432 Gets the number of IOs at the end and gets the total IOs
+				 * for the transaction*/
+				EndIOs = SimpleDB.fileMgr().IONumber();
+				System.out.println("IOs for test5 & test1 join: " + (EndIOs - StartIOs));
+				
+				tx = new Transaction();
+				/*CS4432 Does a sortmergejoin on test6 and test1*/
+				qry = "select a1,a2 from test6, test1 where a1 = a2 order by a1";
+				
+				/*CS4432 Gets the number of IOs at the start*/
+				StartIOs = SimpleDB.fileMgr().IONumber();
+				
+				p = SimpleDB.planner().createQueryPlan(qry, tx);
+				
+				// analogous to the result set
+				s = p.open();
+
+				while (s.next()) {
+					String a1 = s.getString("a1");
+					String a2 = s.getString("a2");
+					System.out.println(a1 + "\t" + a2);
+				}
+				s.close();
+				tx.commit();
+				
+				/*CS4432 Gets the number of IOs at the end and gets the total IOs
+				 * for the transaction*/
+				EndIOs = SimpleDB.fileMgr().IONumber();
+				System.out.println("IOs for test6 & test1 join: " + (EndIOs - StartIOs));
 		}
 		catch(Exception e) {
 			e.printStackTrace();

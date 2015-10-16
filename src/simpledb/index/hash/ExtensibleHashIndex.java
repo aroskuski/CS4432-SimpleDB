@@ -13,10 +13,9 @@ import simpledb.index.Index;
  * Index. Code is based on the HashIndex.java file*/
 
 /**
- * A static hash implementation of the Index interface.
+ * A extensible hash implementation of the Index interface.
  * A fixed number of buckets is allocated (currently, 100),
  * and each bucket is implemented as a file of index records.
- * @author Edward Sciore
  */
 public class ExtensibleHashIndex implements Index {
 	public static int NUM_BUCKETS = 100;
@@ -25,22 +24,26 @@ public class ExtensibleHashIndex implements Index {
 	private Transaction tx;
 	private Constant searchkey = null;
 	private TableInfo indTi;
+	
+	/*CS4432 The precision of the index */
 	private int precision;
 	private int bucketPrecision;
+	
+	/*CS4432 Information for the buckets of the extensible hash*/
 	private ExtensibleHashBucket bucket = null;
 	private String bucketPostfix = null;
 
 	/**
 	 * Opens a hash index for the specified index.
 	 * @param idxname the name of the index
-	 * @param sch the schema of the index records
+	 * @param bucketSch the schema of the index records
 	 * @param tx the calling transaction
 	 */
 	public ExtensibleHashIndex(String idxname, Schema bucketSch, Transaction tx) {
 		this.idxname = idxname;
 		this.sch = bucketSch;
 		
-		//deal with the 2nd level index
+		/*Deals with the 2nd level index*/
 		Schema indexsch = new Schema();
 		indexsch.addIntField("hash");
 		indexsch.addIntField("precision");
@@ -107,29 +110,19 @@ public class ExtensibleHashIndex implements Index {
 		bucket.beforeFirst(searchkey);
 	}
 
-	/**
-	 * Moves to the next record having the search key.
-	 * The method loops through the table scan for the bucket,
-	 * looking for a matching record, and returning false
-	 * if there are no more such records.
-	 * @see simpledb.index.Index#next()
-	 */
+	/* CS4432 Calls the bucket's next() function */
 	public boolean next() {
 		return bucket.next();
 	}
 
-	/**
-	 * Retrieves the dataRID from the current record
-	 * in the table scan for the bucket.
-	 * @see simpledb.index.Index#getDataRid()
-	 */
+	/* CS4432 Calls the bucket's getDataRid() function */
 	public RID getDataRid() {
 		return bucket.getDataRid();
 	}
 
-	/**
-	 * Inserts a new record into the table scan for the bucket.
-	 * @see simpledb.index.Index#insert(simpledb.query.Constant, simpledb.record.RID)
+	/* CS4432 Inserts a new record into the table scan for the bucket
+	 * Depending on the size of the bucket, it may not be able to hold
+	 * the information so a split may be needed
 	 */
 	public void insert(Constant val, RID rid) {
 		beforeFirst(val);
@@ -181,12 +174,13 @@ public class ExtensibleHashIndex implements Index {
 		return numblocks / ExtensibleHashIndex.NUM_BUCKETS;
 	}
 	
+	/*CS4432 Generates the bitmask for the current precision*/
 	private int genBitmask(){
 		return genBitmask(precision);
 	}
 	
-	/*CS4432 Used to compare the bitmask of the bucket
-	 * to new elements when they are added to index*/
+	/*CS4432 uses bitwise operations to get the precision
+	 * of the bucket make sure elements are sorted correctly*/
 	private int genBitmask(int precision){
 		return (~0x0) >>> (32 - precision);
 	}
@@ -262,7 +256,7 @@ public class ExtensibleHashIndex implements Index {
 		precision++;
 		
 	}
-	/*Creates the name of the bucket*/
+	/*CS4432 Creates the name of the bucket*/
 	private String genBucketName(int hash, int precision){
 		String result = Integer.toString(hash, 2);
 		while(result.length() < precision){
