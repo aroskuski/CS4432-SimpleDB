@@ -1,0 +1,9 @@
+For Smart Merge Join, check the metadata to see if it has been Sorted. If they have been, then
+use as is. If not use the existing sort scan and copy the resulting table back into the main
+table. Then those tables are merged. 
+
+For Extensible hash, One main table stores the master index that are linked to the hash buckets.
+It is essentially the top level of the extensible hash index. Buckets are created based off of 
+bit values and all information is sorted is based on that. If the bucket cannot hold anymore, 
+then the buckets split and are re-sorted. Buckets won't be created if the precision value is 
+greater than 32 bit. Buckets are really tables, just different names.

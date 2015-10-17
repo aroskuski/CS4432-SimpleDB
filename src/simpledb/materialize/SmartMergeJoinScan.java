@@ -2,9 +2,10 @@ package simpledb.materialize;
 
 import simpledb.query.*;
 
+
+/*CS4432 Code based on MergeJoinScan*/
 /**
- * The Scan class for the <i>mergejoin</i> operator.
- * @author Edward Sciore
+ * The Scan class for the <i>smartmergejoin</i> operator.
  */
 public class SmartMergeJoinScan implements Scan {
    private Scan s1;
@@ -13,7 +14,7 @@ public class SmartMergeJoinScan implements Scan {
    private Constant joinval = null;
    
    /**
-    * Creates a mergejoin scan for the two underlying sorted scans.
+    * Creates a smartmergejoin scan for the two underlying sorted scans.
     * @param s1 the LHS sorted scan
     * @param s2 the RHS sorted scan
     * @param fldname1 the LHS join field

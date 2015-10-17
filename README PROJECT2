@@ -22,5 +22,14 @@ TestQueries.java
 
 The whole contents of the zip archive should be imported into Eclipse
 
-When the TestQueries is run, the folder containing the database must be deleted
+In order to run TestQueries, the Startup file must be run and the folder
+that is created must be cs4432 for the tests to be done correctly. Then
+CreateTestTables must be run in order to create the database. Once those
+are created, you can run TestQueries. Every time Startup is run, the
+the folder containing the database must be deleted, not just the files, but
+the whole folder. Otherwise, it will not run correctly. Right now the database
+creates 100 tuples in order for quick testing.
 
+Smart Merge Join tests were not working. They have been commented out.
+
+Also Using the Heuristic Query Planner

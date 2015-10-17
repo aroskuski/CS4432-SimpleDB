@@ -5,9 +5,11 @@ import simpledb.record.*;
 import simpledb.query.*;
 import java.util.*;
 
+
+/*CS4432 Based on MergeJoinPlan*/
 /**
- * The Plan class for the <i>mergejoin</i> operator.
- * @author Edward Sciore
+ * The Plan class for the <i>smartmergejoin</i> operator.
+ *
  */
 public class SmartMergeJoinPlan implements Plan {
    private Plan p1, p2;
@@ -15,7 +17,7 @@ public class SmartMergeJoinPlan implements Plan {
    private Schema sch = new Schema();
    
    /**
-    * Creates a mergejoin plan for the two specified queries.
+    * Creates a smartmergejoin plan for the two specified queries.
     * The RHS must be materialized after it is sorted, 
     * in order to deal with possible duplicates.
     * @param p1 the LHS query plan
@@ -48,7 +50,7 @@ public class SmartMergeJoinPlan implements Plan {
    }
    
    /** The method first sorts its two underlying scans
-     * on their join field. It then returns a mergejoin scan
+     * on their join field. It then returns a smartmergejoin scan
      * of the two sorted table scans.
      * @see simpledb.query.Plan#open()
      */
@@ -60,8 +62,8 @@ public class SmartMergeJoinPlan implements Plan {
    
    /**
     * Returns the number of block acceses required to
-    * mergejoin the sorted tables.
-    * Since a mergejoin can be preformed with a single
+    * smartmergejoin the sorted tables.
+    * Since a smartmergejoin can be preformed with a single
     * pass through each table, the method returns
     * the sum of the block accesses of the 
     * materialized sorted tables.

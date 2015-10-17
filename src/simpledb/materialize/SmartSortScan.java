@@ -7,13 +7,10 @@ import simpledb.tx.Transaction;
 import simpledb.query.*;
 import java.util.*;
 
+/*CS4432 Code based on SortScan*/
 /**
- * The Scan class for the <i>sort</i> operator.
- * @author Edward Sciore
- */
-/**
- * @author sciore
- *
+ * The Scan class for the <i>smartsort</i> operator.
+
  */
 public class SmartSortScan implements Scan {
    private UpdateScan s1, s2=null, currentscan=null;
@@ -22,7 +19,7 @@ public class SmartSortScan implements Scan {
    private List<RID> savedposition;
    
    /**
-    * Creates a sort scan, given a list of 1 or 2 runs.
+    * Creates a smart sort scan, given a list of 1 or 2 runs.
     * If there is only 1 run, then s2 will be null and
     * hasmore2 will be false.
     * @param runs the list of runs
