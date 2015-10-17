@@ -5,6 +5,7 @@ import static simpledb.file.Page.*;
 import java.util.*;
 
 import simpledb.server.SimpleDB;
+import simpledb.tx.Transaction;
 
 /**
  * The metadata about a table and its records.
@@ -29,6 +30,7 @@ public class TableInfo {
       this.schema = schema;
       this.tblname = tblname;
       offsets  = new HashMap<String,Integer>();
+      sorteds  = new HashMap<String, Integer>();
       int pos = 0;
       for (String fldname : schema.fields()) {
          offsets.put(fldname, pos);
@@ -99,18 +101,18 @@ public class TableInfo {
          return STR_SIZE(schema.length(fldname));
    }
    
-   public void sort(Map<String, Integer> sort){
+   public void sort(Map<String, Integer> sort, Transaction tx){
 	   for(String s : sort.keySet()){
 		   sorteds.put(s, sort.get(s));
 	   }
-	   SimpleDB.mdMgr().sort(sort, tblname);
+	   SimpleDB.mdMgr().sort(sort, tblname,tx);
    }
    
-   public void unsort(){
+   public void unsort(Transaction tx){
 	   for(String s : sorteds.keySet()){
 		   sorteds.put(s, 0);
 	   }
-	   SimpleDB.mdMgr().unsort(tblname);
+	   SimpleDB.mdMgr().unsort(tblname,tx );
    }
    
    public boolean isSorted(List<String> sortfields){

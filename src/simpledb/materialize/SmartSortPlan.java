@@ -61,7 +61,7 @@ public class SmartSortPlan implements Plan {
           }
           SimpleDB.fileMgr().copy(runs.get(0).getTableInfo().fileName(), ti.fileName());
           
-          ti.sort(sort);
+          ti.sort(sort, tx);
           return new SmartSortScan(runs.get(0).getTableInfo(), comp, tx);
       } else {
     	  return new SmartSortScan(ti, comp, tx);

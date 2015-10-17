@@ -115,22 +115,20 @@ public class TableMgr {
       return new TableInfo(tblname, sch, offsets, reclen, sorteds);
    }
    
-   public void sort(Map<String, Integer> sort, String tblname){
-	   Transaction tx = new Transaction();
+   public void sort(Map<String, Integer> sort, String tblname, Transaction tx){
 	   RecordFile fcatfile = new RecordFile(fcatInfo, tx);
 	   while(fcatfile.next()){
-		   if(fcatfile.getString("tblename").equals(tblname)){
+		   if(fcatfile.getString("tblname").equals(tblname)){
 			   fcatfile.setInt("sorted", sort.get(fcatfile.getString("fldname")));
 		   }
 	   }
 	   tx.commit();
    }
    
-   public void unsort(String tblname){
-	   Transaction tx = new Transaction();
+   public void unsort(String tblname, Transaction tx){
 	   RecordFile fcatfile = new RecordFile(fcatInfo, tx);
 	   while(fcatfile.next()){
-		   if(fcatfile.getString("tblename").equals(tblname)){
+		   if(fcatfile.getString("tblname").equals(tblname)){
 			   fcatfile.setInt("sorted", 0);
 		   }
 	   }

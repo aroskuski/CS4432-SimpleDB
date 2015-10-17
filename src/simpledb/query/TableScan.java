@@ -30,7 +30,7 @@ public class TableScan implements UpdateScan {
 	   rf  = new RecordFile(ti, tx);
 	   sch = ti.schema();
 	   if(!sorted){
-		   ti.unsort();
+		   //ti.unsort(tx);
 	   }
    }
    
