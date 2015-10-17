@@ -4,6 +4,8 @@ import static java.sql.Types.INTEGER;
 import static simpledb.file.Page.*;
 import java.util.*;
 
+import simpledb.server.SimpleDB;
+
 /**
  * The metadata about a table and its records.
  * @author Edward Sciore
@@ -13,6 +15,7 @@ public class TableInfo {
    private Map<String,Integer> offsets;
    private int recordlen;
    private String tblname;
+   private Map<String, Integer> sorteds;
    
    /**
     * Creates a TableInfo object, given a table name
@@ -30,6 +33,7 @@ public class TableInfo {
       for (String fldname : schema.fields()) {
          offsets.put(fldname, pos);
          pos += lengthInBytes(fldname);
+         sorteds.put(fldname, 0);
       }
       recordlen = pos;
    }
@@ -44,11 +48,12 @@ public class TableInfo {
     * @param offsets the already-calculated offsets of the fields within a record
     * @param recordlen the already-calculated length of each record
     */
-   public TableInfo(String tblname, Schema schema, Map<String,Integer> offsets, int recordlen) {
+   public TableInfo(String tblname, Schema schema, Map<String,Integer> offsets, int recordlen, Map<String,Integer> sorteds) {
       this.tblname   = tblname;
       this.schema    = schema;
       this.offsets   = offsets;
       this.recordlen = recordlen;
+      this.sorteds   = sorteds;
    }
    
    /**
@@ -92,5 +97,31 @@ public class TableInfo {
          return INT_SIZE;
       else
          return STR_SIZE(schema.length(fldname));
+   }
+   
+   public void sort(Map<String, Integer> sort){
+	   for(String s : sort.keySet()){
+		   sorteds.put(s, sort.get(s));
+	   }
+	   SimpleDB.mdMgr().sort(sort, tblname);
+   }
+   
+   public void unsort(){
+	   for(String s : sorteds.keySet()){
+		   sorteds.put(s, 0);
+	   }
+	   SimpleDB.mdMgr().unsort(tblname);
+   }
+   
+   public boolean isSorted(List<String> sortfields){
+	   int i = 0;
+	   boolean result = true;
+	   for(String field : sortfields){
+		   i++;
+		   if(!sorteds.get(field).equals(i)){
+			   result = false;
+		   }
+	   }
+	   return result;
    }
 }

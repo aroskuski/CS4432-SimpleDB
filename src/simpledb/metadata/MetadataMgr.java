@@ -25,6 +25,14 @@ public class MetadataMgr {
       return tblmgr.getTableInfo(tblname, tx);
    }
    
+   public void sort(Map<String, Integer> sort, String tblname){
+	   tblmgr.sort(sort, tblname);
+   }
+   
+   public void unsort(String tblname){
+	   tblmgr.unsort(tblname);
+   }
+   
    public void createView(String viewname, String viewdef, Transaction tx) {
       viewmgr.createView(viewname, viewdef, tx);
    }

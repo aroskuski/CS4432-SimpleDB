@@ -23,8 +23,15 @@ public class TableScan implements UpdateScan {
     * @param tx the calling transaction
     */
    public TableScan(TableInfo ti, Transaction tx) {
-      rf  = new RecordFile(ti, tx);
-      sch = ti.schema();
+	  this(ti,tx,false);
+   }
+   
+   public TableScan(TableInfo ti, Transaction tx, boolean sorted){
+	   rf  = new RecordFile(ti, tx);
+	   sch = ti.schema();
+	   if(!sorted){
+		   ti.unsort();
+	   }
    }
    
    // Scan methods

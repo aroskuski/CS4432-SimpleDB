@@ -152,4 +152,15 @@ public class FileMgr {
    public long IONumber(){
 	   return IOs;
    }
+   
+   public void copy(String src, String dest){
+	   try{
+		   FileChannel srcCh = getFile(src);
+		   FileChannel destCh = getFile(dest);
+		   destCh.truncate(0);
+		   destCh.transferFrom(srcCh, 0, srcCh.size());
+	   } catch(IOException e){
+		   e.printStackTrace();
+	   }
+   }
 }

@@ -1,6 +1,9 @@
 package simpledb.materialize;
 
 import simpledb.record.RID;
+import simpledb.record.TableInfo;
+import simpledb.server.SimpleDB;
+import simpledb.tx.Transaction;
 import simpledb.query.*;
 import java.util.*;
 
@@ -25,14 +28,9 @@ public class SmartSortScan implements Scan {
     * @param runs the list of runs
     * @param comp the record comparator
     */
-   public SmartSortScan(List<TempTable> runs, RecordComparator comp) {
+   public SmartSortScan(TableInfo ti, RecordComparator comp, Transaction tx) {
       this.comp = comp;
-      s1 = (UpdateScan) runs.get(0).open();
-      hasmore1 = s1.next();
-      if (runs.size() > 1) {
-         s2 = (UpdateScan) runs.get(1).open();
-         hasmore2 = s2.next();
-      }
+      s1 = (UpdateScan) new TableScan(ti, null);
    }
    
    /**

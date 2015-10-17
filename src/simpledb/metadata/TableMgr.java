@@ -41,6 +41,7 @@ public class TableMgr {
       fcatSchema.addIntField("type");
       fcatSchema.addIntField("length");
       fcatSchema.addIntField("offset");
+      fcatSchema.addIntField("sorted");
       fcatInfo = new TableInfo("fldcat", fcatSchema);
       
       if (isNew) {
@@ -73,6 +74,7 @@ public class TableMgr {
          fcatfile.setInt   ("type",   sch.type(fldname));
          fcatfile.setInt   ("length", sch.length(fldname));
          fcatfile.setInt   ("offset", ti.offset(fldname));
+         fcatfile.setInt   ("sorted", 0);
       }
       fcatfile.close();
    }
@@ -97,16 +99,42 @@ public class TableMgr {
       RecordFile fcatfile = new RecordFile(fcatInfo, tx);
       Schema sch = new Schema();
       Map<String,Integer> offsets = new HashMap<String,Integer>();
+      Map<String,Integer> sorteds = new HashMap<String, Integer>();
       while (fcatfile.next())
          if (fcatfile.getString("tblname").equals(tblname)) {
          String fldname = fcatfile.getString("fldname");
          int fldtype    = fcatfile.getInt("type");
          int fldlen     = fcatfile.getInt("length");
          int offset     = fcatfile.getInt("offset");
+         int sorted     = fcatfile.getInt("sorted");
          offsets.put(fldname, offset);
+         sorteds.put(fldname, sorted);
          sch.addField(fldname, fldtype, fldlen);
       }
       fcatfile.close();
-      return new TableInfo(tblname, sch, offsets, reclen);
+      return new TableInfo(tblname, sch, offsets, reclen, sorteds);
    }
+   
+   public void sort(Map<String, Integer> sort, String tblname){
+	   Transaction tx = new Transaction();
+	   RecordFile fcatfile = new RecordFile(fcatInfo, tx);
+	   while(fcatfile.next()){
+		   if(fcatfile.getString("tblename").equals(tblname)){
+			   fcatfile.setInt("sorted", sort.get(fcatfile.getString("fldname")));
+		   }
+	   }
+	   tx.commit();
+   }
+   
+   public void unsort(String tblname){
+	   Transaction tx = new Transaction();
+	   RecordFile fcatfile = new RecordFile(fcatInfo, tx);
+	   while(fcatfile.next()){
+		   if(fcatfile.getString("tblename").equals(tblname)){
+			   fcatfile.setInt("sorted", 0);
+		   }
+	   }
+	   tx.commit();
+   }
+   
 }

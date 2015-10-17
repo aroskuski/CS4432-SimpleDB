@@ -24,14 +24,24 @@ public class SmartMergeJoinPlan implements Plan {
     * @param fldname2 the RHS join field
     * @param tx the calling transaction
     */
-   public SmartMergeJoinPlan(Plan p1, Plan p2, String fldname1, String fldname2, Transaction tx) {
+   public SmartMergeJoinPlan(Plan p1, Plan p2, String fldname1, String fldname2, Transaction tx, String tblname, String tblname2) {
       this.fldname1 = fldname1;
       List<String> sortlist1 = Arrays.asList(fldname1);
-      this.p1 = new SortPlan(p1, sortlist1, tx);
+      if(tblname != null){
+    	  this.p1 = new SmartSortPlan(p1, sortlist1, tx, tblname);
+      } else {
+    	  this.p1 = new SortPlan(p1, sortlist1, tx);
+      }
+      
       
       this.fldname2 = fldname2;
       List<String> sortlist2 = Arrays.asList(fldname2);
-      this.p2 = new SortPlan(p2, sortlist2, tx);
+      if(tblname2 != null){
+    	  this.p2 = new SmartSortPlan(p2, sortlist2, tx, tblname2);
+      } else {
+    	  this.p2 = new SortPlan(p2, sortlist2, tx);
+      }
+      
       
       sch.addAll(p1.schema());
       sch.addAll(p2.schema());
@@ -45,7 +55,7 @@ public class SmartMergeJoinPlan implements Plan {
    public Scan open() {
       Scan s1 = p1.open();
       SortScan s2 = (SortScan) p2.open();
-      return new MergeJoinScan(s1, s2, fldname1, fldname2);
+      return new SmartMergeJoinScan(s1, s2, fldname1, fldname2);
    }
    
    /**

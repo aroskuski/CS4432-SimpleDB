@@ -2,6 +2,7 @@ package simpledb.materialize;
 
 import simpledb.tx.Transaction;
 import simpledb.record.*;
+import simpledb.server.SimpleDB;
 import simpledb.query.*;
 
 import java.util.*;
@@ -15,6 +16,10 @@ public class SmartSortPlan implements Plan {
    private Transaction tx;
    private Schema sch;
    private RecordComparator comp;
+   private String tblname;
+   private TableInfo ti;
+   private boolean needsSorting = true;
+   private Map<String,Integer> sort = new HashMap<String, Integer>();
    
    /**
     * Creates a sort plan for the specified query.
@@ -22,11 +27,21 @@ public class SmartSortPlan implements Plan {
     * @param sortfields the fields to sort by
     * @param tx the calling transaction
     */
-   public SmartSortPlan(Plan p, List<String> sortfields, Transaction tx) {
+   public SmartSortPlan(Plan p, List<String> sortfields, Transaction tx, String tblname) {
       this.p = p;
       this.tx = tx;
       sch = p.schema();
       comp = new RecordComparator(sortfields);
+      this.tblname = tblname;
+      this.ti = SimpleDB.mdMgr().getTableInfo(tblname, tx);
+      if(ti.isSorted(sortfields)){
+    	 this.needsSorting = false; 
+      }
+      int i = 0;
+      for(String s : sortfields){
+    	  i++;
+    	  this.sort.put(s, i);
+      }
    }
    
    /**
@@ -37,11 +52,22 @@ public class SmartSortPlan implements Plan {
     */
    public Scan open() {
       Scan src = p.open();
-      List<TempTable> runs = splitIntoRuns(src);
-      src.close();
-      while (runs.size() > 2)
-         runs = doAMergeIteration(runs);
-      return new SortScan(runs, comp);
+      
+      if(needsSorting){
+    	  List<TempTable> runs = splitIntoRuns(src);
+          src.close();
+          while (runs.size() > 1){
+             runs = doAMergeIteration(runs);
+          }
+          SimpleDB.fileMgr().copy(runs.get(0).getTableInfo().fileName(), ti.fileName());
+          
+          ti.sort(sort);
+          return new SmartSortScan(runs.get(0).getTableInfo(), comp, tx);
+      } else {
+    	  return new SmartSortScan(ti, comp, tx);
+      }
+      
+      
    }
    
    /**
