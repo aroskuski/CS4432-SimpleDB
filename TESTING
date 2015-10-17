@@ -1,1 +1,36 @@
 Our tests are as follows:
+new transaction: 1
+recovering existing database
+transaction 1 committed
+new transaction: 2
+transaction 2 committed
+IOs for test1 select: 15
+Time in ms for test1 select: 32
+new transaction: 3
+transaction 3 committed
+IOs for test2 select: 26
+Time in ms for test2 select: 34
+new transaction: 4
+transaction 4 committed
+IOs for test3 select: 29
+Time in ms for test3 select: 33
+new transaction: 5
+transaction 5 committed
+IOs for test4 select: 29
+Time in ms for test4 select: 22
+new transaction: 6
+transaction 6 committed
+IOs for test5 & test2 join: 93
+Time in ms for test5 & test2 join: 843
+new transaction: 7
+transaction 7 committed
+IOs for test5 & test3 join: 145
+Time in ms for test5 & test3 join: 21
+new transaction: 8
+transaction 8 committed
+IOs for test5 & test4 join: 145
+Time in ms for test5 & test4 join: 30
+new transaction: 9
+transaction 9 committed
+IOs for test5 & test1 join: 46
+Time in ms for test5 & test1 join: 255
