@@ -119,7 +119,9 @@ public class TableMgr {
 	   RecordFile fcatfile = new RecordFile(fcatInfo, tx);
 	   while(fcatfile.next()){
 		   if(fcatfile.getString("tblname").equals(tblname)){
-			   fcatfile.setInt("sorted", sort.get(fcatfile.getString("fldname")));
+			   if(sort.get(fcatfile.getString("fldname")) != null){
+				   fcatfile.setInt("sorted", sort.get(fcatfile.getString("fldname")));
+			   }
 		   }
 	   }
 	   tx.commit();

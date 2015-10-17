@@ -102,7 +102,7 @@ public class SimpleDB {
     * @return the system's planner for SQL commands
     */public static Planner planner() {
       /*CS4432 Uses the HeuristicQueryPlanner instead of BasicQueryPlanner*/
-      QueryPlanner  qplanner = new ExploitSortQueryPlanner();
+      QueryPlanner  qplanner = new HeuristicQueryPlanner();
       /*CS4432 Uses the IndexUpdatePlanner instead of BasicUpdatePlanner*/
       UpdatePlanner uplanner = new IndexUpdatePlanner();
       return new Planner(qplanner, uplanner);
