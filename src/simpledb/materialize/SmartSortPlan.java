@@ -6,10 +6,9 @@ import simpledb.server.SimpleDB;
 import simpledb.query.*;
 
 import java.util.*;
-
+/*CS4432 Based on SortPlan file*/
 /**
- * The Plan class for the <i>sort</i> operator.
- * @author Edward Sciore
+ * The Plan class for the <i>smartsort</i> operator.
  */
 public class SmartSortPlan implements Plan {
    private Plan p;
@@ -112,6 +111,7 @@ public class SmartSortPlan implements Plan {
       return sch;
    }
    
+   /*CS4432 Splits a Run*/
    private List<TempTable> splitIntoRuns(Scan src) {
       List<TempTable> temps = new ArrayList<TempTable>();
       src.beforeFirst();
@@ -132,6 +132,7 @@ public class SmartSortPlan implements Plan {
       return temps;
    }
    
+   /*CS4432 Does a merge iteration*/
    private List<TempTable> doAMergeIteration(List<TempTable> runs) {
       List<TempTable> result = new ArrayList<TempTable>();
       while (runs.size() > 1) {
@@ -143,7 +144,7 @@ public class SmartSortPlan implements Plan {
          result.add(runs.get(0));
       return result;
    }
-   
+   /*CS4432 Merges two tables*/
    private TempTable mergeTwoRuns(TempTable p1, TempTable p2) {
       Scan src1 = p1.open();
       Scan src2 = p2.open();
@@ -170,6 +171,7 @@ public class SmartSortPlan implements Plan {
       return result;
    }
    
+   /*CS4432 Copies a scan*/
    private boolean copy(Scan src, UpdateScan dest) {
       dest.insert();
       for (String fldname : sch.fields())

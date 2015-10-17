@@ -1,1 +1,6 @@
-No bugs to report
+One bug that we found was that we couldn't update the metadata that a table
+was sorted. The act of writing it to disk is pushing something out of memory.
+We think that if the information was needed, it should have been pinned.
+Or it was not pinned correctly. We believe that record page was becoming unpinned.
+
+We tried doing larger runs but the metadata manager ran out of heap space
